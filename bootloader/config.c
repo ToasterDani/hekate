@@ -168,10 +168,10 @@ static void _save_config()
 	gfx_con_setpos(0, 0);
 
 	if (!create_config_entry())
-		gfx_puts("\nConfiguration was saved!\n");
+		gfx_puts("\nConfigurazione salvata!\n");
 	else
-		EPRINTF("\nConfiguration saving failed!");
-	gfx_puts("\nPress any key...");
+		EPRINTF("\nSalvataggio configurazione fallito!");
+	gfx_puts("\nPremi qualunque tasto...");
 }
 
 static void _config_autoboot_list(void *ent)
@@ -198,7 +198,7 @@ static void _config_autoboot_list(void *ent)
 		{
 			// Build configuration menu.
 			ments[0].type = MENT_BACK;
-			ments[0].caption = "Back";
+			ments[0].caption = "Indietro";
 
 			ments[1].type = MENT_CHGLINE;
 
@@ -233,7 +233,7 @@ static void _config_autoboot_list(void *ent)
 			}
 
 			memset(&ments[i], 0, sizeof(ment_t));
-			menu_t menu = {ments, "Select an entry to auto boot", 0, 0};
+			menu_t menu = {ments, "Scegli una voce da avviare automaticamente", 0, 0};
 			temp_autoboot = (u32 *)tui_do_menu(&menu);
 			if (temp_autoboot != NULL)
 			{
@@ -249,7 +249,7 @@ static void _config_autoboot_list(void *ent)
 		}
 		else
 		{
-			EPRINTF("Could not open 'bootloader/hekate_ipl.ini'.\nMake sure it exists!.");
+			EPRINTF("Apertura di 'bootloader/hekate_ipl.ini' fallita.\nControlla se il file esiste!");
 			goto out;
 		}
 	}
@@ -289,22 +289,22 @@ void config_autoboot()
 		{
 			// Build configuration menu.
 			ments[0].type = MENT_BACK;
-			ments[0].caption = "Back";
+			ments[0].caption = "Indietro";
 
 			ments[1].type = MENT_CHGLINE;
 
 			ments[2].type = MENT_DATA;
 			if (!h_cfg.autoboot)
-				ments[2].caption = "*Disable";
+				ments[2].caption = "*Disattiva";
 			else
-				ments[2].caption = " Disable";
+				ments[2].caption = " Disattiva";
 			ments[2].data = &boot_values[0];
 
 			ments[3].type = MENT_HDLR_RE;
 			if (h_cfg.autoboot_list)
-				ments[3].caption = "*More configs...";
+				ments[3].caption = "*Altre configurazioni...";
 			else
-				ments[3].caption = " More configs...";
+				ments[3].caption = " Altre configurazioni...";
 			ments[3].handler = _config_autoboot_list;
 			ments[3].data = (void *)0xCAFE;
 
@@ -342,13 +342,13 @@ void config_autoboot()
 			if (i < 6 && !h_cfg.autoboot_list)
 			{
 				ments[i].type = MENT_CAPTION;
-				ments[i].caption = "No main configurations found...";
+				ments[i].caption = "Nessuna configurazione principale trovata...";
 				ments[i].color = 0xFFFFDD00;
 				i++;
 			}
 
 			memset(&ments[i], 0, sizeof(ment_t));
-			menu_t menu = {ments, "Disable or select entry to auto boot", 0, 0};
+			menu_t menu = {ments, "Disattiva o scegli una voce da avviare automaticamente", 0, 0};
 			temp_autoboot = (u32 *)tui_do_menu(&menu);
 			if (temp_autoboot != NULL)
 			{
@@ -361,7 +361,7 @@ void config_autoboot()
 		}
 		else
 		{
-			EPRINTF("Could not open 'bootloader/hekate_ipl.ini'.\nMake sure it exists!.");
+			EPRINTF("Apertura di 'bootloader/hekate_ipl.ini' fallita.\nControlla se il file esiste!");
 			goto out;
 		}
 	}
@@ -401,9 +401,9 @@ void config_bootdelay()
 
 	ments[2].type = MENT_DATA;
 	if (h_cfg.bootwait)
-		ments[2].caption = " 0 seconds (Bootlogo disabled)";
+		ments[2].caption = " 0 secondi (Logo di avvio disattivato)";
 	else
-		ments[2].caption = "*0 seconds (Bootlogo disabled)";
+		ments[2].caption = "*0 seconds (Logo di avvio disattivato)";
 	ments[2].data = &delay_values[0];
 
 	u32 i = 0;
@@ -414,7 +414,7 @@ void config_bootdelay()
 		else
 			delay_text[i * delay_text_size] = '*';
 		delay_text[i * delay_text_size + 1] = i + '0';
-		strcpy(delay_text + i * delay_text_size + 2, " seconds");
+		strcpy(delay_text + i * delay_text_size + 2, " secondi");
 
 		ments[i + 2].type = MENT_DATA;
 		ments[i + 2].caption = delay_text + (i * delay_text_size);
@@ -422,7 +422,7 @@ void config_bootdelay()
 	}
 
 	memset(&ments[i + 2], 0, sizeof(ment_t));
-	menu_t menu = {ments, "Time delay for entering bootloader menu", 0, 0};
+	menu_t menu = {ments, "Ritardo di entrata nel menu' del bootloader", 0, 0};
 
 	u32 *temp_bootwait = (u32 *)tui_do_menu(&menu);
 	if (temp_bootwait != NULL)
@@ -456,7 +456,7 @@ void config_backlight()
 		bri_values[j] = j * 10;
 
 	ments[0].type = MENT_BACK;
-	ments[0].caption = "Back";
+	ments[0].caption = "Indietro";
 
 	ments[1].type = MENT_CHGLINE;
 
@@ -482,7 +482,7 @@ void config_backlight()
 	}
 
 	memset(&ments[i + 1], 0, sizeof(ment_t));
-	menu_t menu = {ments, "Backlight brightness", 0, 0};
+	menu_t menu = {ments, "Luminosita' retroilluminazione", 0, 0};
 
 	u32 *temp_backlight = (u32 *)tui_do_menu(&menu);
 	if (temp_backlight != NULL)
@@ -516,31 +516,31 @@ void config_auto_hos_poweroff()
 	}
 
 	ments[0].type = MENT_BACK;
-	ments[0].caption = "Back";
+	ments[0].caption = "Indietro";
 
 	ments[1].type = MENT_CHGLINE;
 
 	if (h_cfg.autohosoff == 1)
 	{
-		ments[2].caption = " Disable";
-		ments[3].caption = "*Enable";
-		ments[4].caption = " Enable (No logo)";
+		ments[2].caption = " Disattiva";
+		ments[3].caption = "*Attiva";
+		ments[4].caption = " Attiva (No logo)";
 	}
 	else if (h_cfg.autohosoff >= 2)
 	{
-		ments[2].caption = " Disable";
-		ments[3].caption = " Enable";
-		ments[4].caption = "*Enable (No logo)";
+		ments[2].caption = " Disattiva";
+		ments[3].caption = " Attiva";
+		ments[4].caption = "*Attiva (No logo)";
 	}
 	else
 	{
-		ments[2].caption = "*Disable";
-		ments[3].caption = " Enable";
-		ments[4].caption = " Enable (No logo)";
+		ments[2].caption = "*Disattiva";
+		ments[3].caption = " Attiva";
+		ments[4].caption = " Attiva (No logo)";
 	}
 
 	memset(&ments[5], 0, sizeof(ment_t));
-	menu_t menu = {ments, "Power off if woke up from HOS", 0, 0};
+	menu_t menu = {ments, "Spegni se uscito da modalita' riposo in HOS", 0, 0};
 
 	u32 *temp_autohosoff = (u32 *)tui_do_menu(&menu);
 	if (temp_autohosoff != NULL)
@@ -573,23 +573,23 @@ void config_nogc()
 	}
 
 	ments[0].type = MENT_BACK;
-	ments[0].caption = "Back";
+	ments[0].caption = "Indietro";
 
 	ments[1].type = MENT_CHGLINE;
 
 	if (h_cfg.autonogc)
 	{
-		ments[2].caption = " Disable";
-		ments[3].caption = "*Auto";
+		ments[2].caption = " Disattiva";
+		ments[3].caption = "*Automatico";
 	}
 	else
 	{
-		ments[2].caption = "*Disable";
-		ments[3].caption = " Auto";
+		ments[2].caption = "*Disattiva";
+		ments[3].caption = " Automatico";
 	}
 
 	memset(&ments[4], 0, sizeof(ment_t));
-	menu_t menu = {ments, "No Gamecard", 0, 0};
+	menu_t menu = {ments, "No Cartuccia", 0, 0};
 
 	u32 *temp_nogc = (u32 *)tui_do_menu(&menu);
 	if (temp_nogc != NULL)
