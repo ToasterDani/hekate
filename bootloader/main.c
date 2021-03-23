@@ -216,7 +216,7 @@ int launch_payload(char *path, bool update)
 		if (f_open(&fp, path, FA_READ))
 		{
 			gfx_con.mute = 0;
-			EPRINTFARGS("Payload file is missing!\n(%s)", path);
+			EPRINTFARGS("File del payload non trovato!\n(%s)", path);
 
 			goto out;
 		}
@@ -236,7 +236,7 @@ int launch_payload(char *path, bool update)
 				f_close(&fp);
 
 				gfx_con.mute = 0;
-				EPRINTF("Coreboot not allowed on Mariko!");
+				EPRINTF("Coreboot non utilizzabile su Mariko!");
 
 				goto out;
 			}
@@ -356,7 +356,7 @@ void launch_tools()
 		if (i > 0)
 		{
 			memset(&ments[i + 2], 0, sizeof(ment_t));
-			menu_t menu = { ments, "Choose a file to launch", 0, 0 };
+			menu_t menu = { ments, "Scegli un file da avviare", 0, 0 };
 
 			file_sec = (char *)tui_do_menu(&menu);
 
@@ -371,7 +371,7 @@ void launch_tools()
 			}
 		}
 		else
-			EPRINTF("No payloads or modules found.");
+			EPRINTF("Non sono stati trovati payload o moduli.");
 
 		free(ments);
 		free(filelist);
@@ -388,7 +388,7 @@ void launch_tools()
 		memcpy(dir + strlen(dir), file_sec, strlen(file_sec) + 1);
 
 		launch_payload(dir, false);
-		EPRINTF("Failed to launch payload.");
+		EPRINTF("Avvio del payload fallito.");
 	}
 
 out:
@@ -440,7 +440,7 @@ void ini_list_launcher()
 			{
 				memset(&ments[i], 0, sizeof(ment_t));
 				menu_t menu = {
-					ments, "Launch ini configurations", 0, 0
+					ments, "Avvia configurazioni ini", 0, 0
 				};
 
 				cfg_sec = (ini_sec_t *)tui_do_menu(&menu);
@@ -494,11 +494,11 @@ void ini_list_launcher()
 				}
 			}
 			else
-				EPRINTF("No extra configs found.");
+				EPRINTF("Non sono state trovate config aggiuntive.");
 			free(ments);
 		}
 		else
-			EPRINTF("Could not find any ini\nin bootloader/ini!");
+			EPRINTF("Nessun ini trovato\nin bootloader/ini!");
 	}
 
 	if (!cfg_sec)
@@ -507,13 +507,13 @@ void ini_list_launcher()
 	if (payload_path)
 	{
 		launch_payload(payload_path, false);
-		EPRINTF("Failed to launch payload.");
+		EPRINTF("Avvio del payload fallito.");
 		free(payload_path);
 	}
 	else if (!hos_launch(cfg_sec))
 	{
 wrong_emupath:
-		EPRINTF("Failed to launch HOS.");
+		EPRINTF("Avvio di HOS fallito.");
 		if (emummc_path)
 		{
 			sd_mount();
@@ -545,14 +545,14 @@ void launch_firmware()
 			// Build configuration menu.
 			ment_t *ments = (ment_t *)malloc(sizeof(ment_t) * (max_entries + 6));
 			ments[0].type = MENT_BACK;
-			ments[0].caption = "Back";
+			ments[0].caption = "Indietro";
 			ments[1].type = MENT_CHGLINE;
 
 			ments[2].type = MENT_HANDLER;
-			ments[2].caption = "Payloads...";
+			ments[2].caption = "Payload...";
 			ments[2].handler = launch_tools;
 			ments[3].type = MENT_HANDLER;
-			ments[3].caption = "More configs...";
+			ments[3].caption = "Altre configurazioni...";
 			ments[3].handler = ini_list_launcher;
 
 			ments[4].type = MENT_CHGLINE;
@@ -576,13 +576,13 @@ void launch_firmware()
 			if (i < 6)
 			{
 				ments[i].type = MENT_CAPTION;
-				ments[i].caption = "No main configs found...";
+				ments[i].caption = "Nessuna config principale trovata...";
 				ments[i].color = 0xFFFFDD00;
 				i++;
 			}
 			memset(&ments[i], 0, sizeof(ment_t));
 			menu_t menu = {
-				ments, "Launch configurations", 0, 0
+				ments, "Configurazioni di avvio", 0, 0
 			};
 
 			cfg_sec = (ini_sec_t *)tui_do_menu(&menu);
@@ -620,7 +620,7 @@ void launch_firmware()
 
 			if (emummc_path && !emummc_set_path(emummc_path))
 			{
-				EPRINTF("emupath is wrong!");
+				EPRINTF("emupath errata!");
 				goto wrong_emupath;
 			}
 
@@ -637,25 +637,25 @@ void launch_firmware()
 			free(ments);
 		}
 		else
-			EPRINTF("Could not open 'bootloader/hekate_ipl.ini'.\nMake sure it exists!");
+			EPRINTF("Apertura di 'bootloader/hekate_ipl.ini' fallita.\nControlla se il file esiste!");
 	}
 
 	if (!cfg_sec)
 	{
-		gfx_printf("\nPress any key...\n");
+		gfx_printf("\nPremi qualunque tasto...\n");
 		goto out;
 	}
 
 	if (payload_path)
 	{
 		launch_payload(payload_path, false);
-		EPRINTF("Failed to launch payload.");
+		EPRINTF("Avvio del payload fallito.");
 		free(payload_path);
 	}
 	else if (!hos_launch(cfg_sec))
 	{
 wrong_emupath:
-		EPRINTF("Failed to launch HOS.");
+		EPRINTF("Avvio di HOS fallito.");
 		if (emummc_path)
 		{
 			sd_mount();
@@ -699,9 +699,9 @@ void nyx_load_run()
 		h_cfg.errors |= ERR_SYSOLD_NYX;
 
 		gfx_con_setpos(0, 0);
-		WPRINTF("Old Nyx GUI found! There will be dragons!\n");
-		WPRINTF("\nUpdate the bootloader folder!\n\n");
-		WPRINTF("Press any key...");
+		WPRINTF("Interfaccia vecchia Nyx trovata! Vedrai dei draghi!\n");
+		WPRINTF("\nAggiorna la cartella bootloader!\n\n");
+		WPRINTF("Premi qualunque tasto...");
 
 		msleep(1000);
 		btn_wait();
@@ -1069,7 +1069,7 @@ skip_list:
 		else if (emummc_path && !emummc_set_path(emummc_path))
 		{
 			gfx_con.mute = false;
-			EPRINTF("emupath is wrong!");
+			EPRINTF("emupath errata!");
 			goto wrong_emupath;
 		}
 
@@ -1077,7 +1077,7 @@ skip_list:
 		hos_launch(cfg_sec);
 
 wrong_emupath:
-		EPRINTF("\nFailed to launch HOS!");
+		EPRINTF("\nAvvio di HOS fallito!");
 
 		if (emummc_path || b_cfg.boot_cfg & BOOT_CFG_TO_EMUMMC)
 		{
@@ -1087,7 +1087,7 @@ wrong_emupath:
 
 payload_error:
 		gfx_con.mute = 0;
-		gfx_printf("\nPress any key...\n");
+		gfx_printf("\nPremi qualunque tasto...\n");
 		display_backlight_brightness(h_cfg.backlight, 1000);
 		msleep(500);
 		btn_wait();
@@ -1182,19 +1182,19 @@ static void _show_errors()
 		display_backlight_brightness(150, 1000);
 
 		if (h_cfg.errors & ERR_SD_BOOT_EN)
-			WPRINTF("Failed to mount SD!\n");
+			WPRINTF("Montaggio della SD fallito!\n");
 
 		if (h_cfg.errors & ERR_LIBSYS_LP0)
-			WPRINTF("Missing LP0 (sleep mode) lib!\n");
+			WPRINTF("Librerie LP0 (modalita' riposo) mancanti!\n");
 		if (h_cfg.errors & ERR_LIBSYS_MTC)
-			WPRINTF("Missing or old Minerva lib!\n");
+			WPRINTF("Libreria Minerva vecchia o obsoleta!\n");
 
 		if (h_cfg.errors & (ERR_LIBSYS_LP0 | ERR_LIBSYS_MTC))
-			WPRINTF("\nUpdate bootloader folder!\n\n");
+			WPRINTF("\nAggiorna la cartella bootloader!\n\n");
 
 		if (h_cfg.errors & ERR_EXCEPTION)
 		{
-			WPRINTFARGS("An exception occurred (LR %08X):\n", *excp_lr);
+			WPRINTFARGS("Si e' verificata un'eccezione (LR %08X):\n", *excp_lr);
 			switch (*excp_type)
 			{
 			case EXCP_TYPE_RESET:
@@ -1218,12 +1218,12 @@ static void _show_errors()
 
 		if (0 && h_cfg.errors & ERR_L4T_KERNEL)
 		{
-			WPRINTF("Panic occurred while running L4T.\n");
+			WPRINTF("Si e' verificata un'eccezione con L4T.\n");
 			if (!sd_save_to_file((void *)PSTORE_ADDR, PSTORE_SZ, "L4T_panic.bin"))
-				WPRINTF("PSTORE saved to L4T_panic.bin\n");
+				WPRINTF("PSTORE salvato in L4T_panic.bin\n");
 		}
 
-		WPRINTF("Press any key...");
+		WPRINTF("Premi qualunque tasto...");
 
 		msleep(1000);
 		btn_wait();
@@ -1358,13 +1358,13 @@ static void _about()
 		"\nhekate     (c) 2018 naehrwert, st4rk\n\n"
 		"CTCaer mod (c) 2018 CTCaer\n"
 		" ___________________________________________\n\n"
-		"Thanks to: %kderrek, nedwill, plutoo,\n"
+		"Grazie a: %kderrek, nedwill, plutoo,\n"
 		"           shuffle2, smea, thexyz, yellows8%k\n"
 		" ___________________________________________\n\n"
-		"Greetings to: fincs, hexkyz, SciresM,\n"
+		"Saluti a: fincs, hexkyz, SciresM,\n"
 		"              Shiny Quagsire, WinterMute\n"
 		" ___________________________________________\n\n"
-		"Open source and free packages used:\n\n"
+		"Pacchetti gratis e open source usati:\n\n"
 		" - FatFs R0.13b,\n"
 		"   Copyright (c) 2018, ChaN\n\n"
 		" - bcl-1.2.0,\n"
@@ -1408,11 +1408,11 @@ static void _about()
 ment_t ment_options[] = {
 	MDEF_BACK(),
 	MDEF_CHGLINE(),
-	MDEF_HANDLER("Auto boot", config_autoboot),
-	MDEF_HANDLER("Boot delay", config_bootdelay),
-	MDEF_HANDLER("Auto NoGC", config_nogc),
-	MDEF_HANDLER("Auto HOS power off", config_auto_hos_poweroff),
-	MDEF_HANDLER("Backlight", config_backlight),
+	MDEF_HANDLER("Avvio automatico", config_autoboot),
+	MDEF_HANDLER("Ritardo di avvio", config_bootdelay),
+	MDEF_HANDLER("NoGC automatico", config_nogc),
+	MDEF_HANDLER("Spegnimento automatico di HOS", config_auto_hos_poweroff),
+	MDEF_HANDLER("Retroilluminazione", config_backlight),
 	MDEF_END()
 };
 
@@ -1421,51 +1421,51 @@ menu_t menu_options = { ment_options, "Options", 0, 0 };
 ment_t ment_cinfo[] = {
 	MDEF_BACK(),
 	MDEF_CHGLINE(),
-	MDEF_CAPTION("---- SoC Info ----", 0xFF0AB9E6),
+	MDEF_CAPTION("---- Info del SoC ----", 0xFF0AB9E6),
 	MDEF_HANDLER("Ipatches & bootrom", bootrom_ipatches_info),
 	MDEF_HANDLER("Fuses", print_fuseinfo),
 	//MDEF_HANDLER("Print kfuse info", print_kfuseinfo),
 	//MDEF_HANDLER("Print TSEC keys", print_tsec_key),
 	MDEF_CHGLINE(),
-	MDEF_CAPTION("-- Storage Info --", 0xFF0AB9E6),
+	MDEF_CAPTION("-- Info unita' archiviazione --", 0xFF0AB9E6),
 	MDEF_HANDLER("eMMC", print_mmc_info),
-	MDEF_HANDLER("SD Card", print_sdcard_info),
+	MDEF_HANDLER("Scheda SD", print_sdcard_info),
 	MDEF_CHGLINE(),
-	MDEF_CAPTION("------ Misc ------", 0xFF0AB9E6),
-	MDEF_HANDLER("Battery", print_battery_info),
+	MDEF_CAPTION("------ Varie ------", 0xFF0AB9E6),
+	MDEF_HANDLER("Batteria", print_battery_info),
 	MDEF_END()
 };
 
-menu_t menu_cinfo = { ment_cinfo, "Console Info", 0, 0 };
+menu_t menu_cinfo = { ment_cinfo, "Informazioni Console", 0, 0 };
 
 ment_t ment_restore[] = {
 	MDEF_BACK(),
 	MDEF_CHGLINE(),
-	MDEF_CAPTION("------ Full --------", 0xFF0AB9E6),
-	MDEF_HANDLER("Restore eMMC BOOT0/1", restore_emmc_boot),
-	MDEF_HANDLER("Restore eMMC RAW GPP", restore_emmc_rawnand),
+	MDEF_CAPTION("------ Completo --------", 0xFF0AB9E6),
+	MDEF_HANDLER("Ripristina eMMC BOOT0/1", restore_emmc_boot),
+	MDEF_HANDLER("Ripristina eMMC RAW GPP", restore_emmc_rawnand),
 	MDEF_CHGLINE(),
-	MDEF_CAPTION("-- GPP Partitions --", 0xFF0AB9E6),
-	MDEF_HANDLER("Restore GPP partitions", restore_emmc_gpp_parts),
+	MDEF_CAPTION("-- Partizioni GPP --", 0xFF0AB9E6),
+	MDEF_HANDLER("Ripristina partizioni GPP", restore_emmc_gpp_parts),
 	MDEF_END()
 };
 
-menu_t menu_restore = { ment_restore, "Restore Options", 0, 0 };
+menu_t menu_restore = { ment_restore, "Opzioni di Ripristino", 0, 0 };
 
 ment_t ment_backup[] = {
 	MDEF_BACK(),
 	MDEF_CHGLINE(),
-	MDEF_CAPTION("------ Full --------", 0xFF0AB9E6),
-	MDEF_HANDLER("Backup eMMC BOOT0/1", dump_emmc_boot),
-	MDEF_HANDLER("Backup eMMC RAW GPP", dump_emmc_rawnand),
+	MDEF_CAPTION("------ Completo --------", 0xFF0AB9E6),
+	MDEF_HANDLER("Backup di eMMC BOOT0/1", dump_emmc_boot),
+	MDEF_HANDLER("Backup di eMMC RAW GPP", dump_emmc_rawnand),
 	MDEF_CHGLINE(),
-	MDEF_CAPTION("-- GPP Partitions --", 0xFF0AB9E6),
-	MDEF_HANDLER("Backup eMMC SYS", dump_emmc_system),
-	MDEF_HANDLER("Backup eMMC USER", dump_emmc_user),
+	MDEF_CAPTION("-- Partizioni GPP --", 0xFF0AB9E6),
+	MDEF_HANDLER("Backup di eMMC SYS", dump_emmc_system),
+	MDEF_HANDLER("Backup di eMMC USER", dump_emmc_user),
 	MDEF_END()
 };
 
-menu_t menu_backup = { ment_backup, "Backup Options", 0, 0 };
+menu_t menu_backup = { ment_backup, "Opzioni di Backup", 0, 0 };
 
 ment_t ment_tools[] = {
 	MDEF_BACK(),
@@ -1481,30 +1481,30 @@ ment_t ment_tools[] = {
 	//MDEF_HANDLER("Fix fuel gauge configuration", fix_fuel_gauge_configuration),
 	//MDEF_HANDLER("Reset all battery cfg", reset_pmic_fuel_gauge_charger_config),
 	//MDEF_CHGLINE(),
-	MDEF_CAPTION("-------- Other -------", 0xFFFFDD00),
+	MDEF_CAPTION("-------- Altro -------", 0xFFFFDD00),
 	MDEF_HANDLER("AutoRCM", menu_autorcm),
 	MDEF_END()
 };
 
-menu_t menu_tools = { ment_tools, "Tools", 0, 0 };
+menu_t menu_tools = { ment_tools, "Strumenti", 0, 0 };
 
 power_state_t STATE_POWER_OFF           = POWER_OFF_RESET;
 power_state_t STATE_REBOOT_RCM          = REBOOT_RCM;
 power_state_t STATE_REBOOT_BYPASS_FUSES = REBOOT_BYPASS_FUSES;
 
 ment_t ment_top[] = {
-	MDEF_HANDLER("Launch", launch_firmware),
+	MDEF_HANDLER("Avvia", launch_firmware),
 	//MDEF_MENU("Options", &menu_options),
 	MDEF_CAPTION("---------------", 0xFF444444),
-	MDEF_MENU("Tools",        &menu_tools),
-	MDEF_MENU("Console info", &menu_cinfo),
+	MDEF_MENU("Strumenti",        &menu_tools),
+	MDEF_MENU("Informazioni console", &menu_cinfo),
 	MDEF_CAPTION("---------------", 0xFF444444),
-	MDEF_HANDLER("Reload", ipl_reload),
-	MDEF_HANDLER_EX("Reboot (OFW)", &STATE_REBOOT_BYPASS_FUSES, power_set_state_ex),
-	MDEF_HANDLER_EX("Reboot (RCM)", &STATE_REBOOT_RCM,          power_set_state_ex),
-	MDEF_HANDLER_EX("Power off",    &STATE_POWER_OFF,           power_set_state_ex),
+	MDEF_HANDLER("Ricarica", ipl_reload),
+	MDEF_HANDLER_EX("Riavvia (OFW)", &STATE_REBOOT_BYPASS_FUSES, power_set_state_ex),
+	MDEF_HANDLER_EX("Riavvia (RCM)", &STATE_REBOOT_RCM,          power_set_state_ex),
+	MDEF_HANDLER_EX("Spegni",    &STATE_POWER_OFF,           power_set_state_ex),
 	MDEF_CAPTION("---------------", 0xFF444444),
-	MDEF_HANDLER("About", _about),
+	MDEF_HANDLER("Info", _about),
 	MDEF_END()
 };
 
@@ -1524,7 +1524,7 @@ void ipl_main()
 	heap_init(IPL_HEAP_START);
 
 #ifdef DEBUG_UART_PORT
-	uart_send(DEBUG_UART_PORT, (u8 *)"hekate: Hello!\r\n", 16);
+	uart_send(DEBUG_UART_PORT, (u8 *)"hekate: Ciao!\r\n", 16);
 	uart_wait_idle(DEBUG_UART_PORT, UART_TX_IDLE);
 #endif
 
