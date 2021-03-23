@@ -166,15 +166,15 @@ int parse_fss(launch_ctxt_t *ctxt, const char *path, fss0_sept_t *sept_ctxt)
 			mariko_not_supported = true;
 		}
 
-		gfx_printf("Found FSS0, Atmosphere %d.%d.%d-%08x\n"
-			"Max HOS supported: %d.%d.%d\n"
-			"Unpacking and loading components..  ",
+		gfx_printf("FSS0 trovato, Atmosphere %d.%d.%d-%08x\n"
+			"HOS massimo supportato: %d.%d.%d\n"
+			"Spacchettamento e caricamento componenti..  ",
 			fss_meta->version >> 24, (fss_meta->version >> 16) & 0xFF, (fss_meta->version >> 8) & 0xFF, fss_meta->git_rev,
 			fss_meta->hos_ver >> 24, (fss_meta->hos_ver >> 16) & 0xFF, (fss_meta->hos_ver >> 8) & 0xFF);
 
 		if (mariko_not_supported)
 		{
-			EPRINTF("\nMariko not supported on < 0.17.0!");
+			EPRINTF("\nMariko non supportato su < 0.17.0!");
 			goto fail;
 		}
 
@@ -211,7 +211,7 @@ int parse_fss(launch_ctxt_t *ctxt, const char *path, fss0_sept_t *sept_ctxt)
 					merge_kip_t *mkip1 = (merge_kip_t *)malloc(sizeof(merge_kip_t));
 					mkip1->kip1 = content;
 					list_append(&ctxt->kip1_list, &mkip1->link);
-					DPRINTF("Loaded %s.kip1 from FSS0 (size %08X)\n", curr_fss_cnt[i].name, curr_fss_cnt[i].size);
+					DPRINTF("Caricato %s.kip1 da FSS0 (dimensione %08X)\n", curr_fss_cnt[i].name, curr_fss_cnt[i].size);
 					break;
 
 				case CNT_TYPE_KRN:
@@ -271,7 +271,7 @@ int parse_fss(launch_ctxt_t *ctxt, const char *path, fss0_sept_t *sept_ctxt)
 		}
 
 out:
-		gfx_printf("Done!\n");
+		gfx_printf("Fatto!\n");
 		f_close(&fp);
 
 		_update_r2p(ctxt, path);

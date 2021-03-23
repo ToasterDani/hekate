@@ -147,9 +147,9 @@ void *tui_do_menu(menu_t *menu)
 
 		// Print errors, help and battery status.
 		gfx_con_setpos(0,  1127);
-		gfx_printf("%k Warning: %k Nyx is missing!", 0xFF800000, 0xFF555555);
+		gfx_printf("%k Errore: %k Nyx non presente!", 0xFF800000, 0xFF555555);
 		gfx_con_setpos(0,  1191);
-		gfx_printf("%k VOL: Move up/down\n PWR: Select option%k", 0xFF555555, 0xFFCCCCCC);
+		gfx_printf("%k VOL: Muovi sopra/sotto\n PWR: Seleziona opzione%k", 0xFF555555, 0xFFCCCCCC);
 
 		display_backlight_brightness(h_cfg.backlight, 1000);
 

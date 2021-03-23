@@ -99,9 +99,9 @@ void check_sept(ini_sec_t *cfg_sec)
 	if (res)
 	{
 		if (res == 2)
-			EPRINTF("Failed to init eMMC.");
+			EPRINTF("Inizializzazione eMMC fallita.");
 		else
-			EPRINTF("Failed to init emuMMC.");
+			EPRINTF("Inizializzazione emuMMC fallita.");
 
 		goto out_free;
 	}
@@ -113,7 +113,7 @@ void check_sept(ini_sec_t *cfg_sec)
 	const pkg1_id_t *pkg1_id = pkg1_identify(pkg1);
 	if (!pkg1_id)
 	{
-		EPRINTF("Unknown pkg1 version.");
+		EPRINTF("Versione pkg1 sconosciuta.");
 		goto out_free;
 	}
 
@@ -136,8 +136,8 @@ void check_sept(ini_sec_t *cfg_sec)
 		if (bootloader_entrypoint > SEPT_PRI_ENTRY)
 		{
 			gfx_con.mute = false;
-			EPRINTF("Failed to run sept\n""Main BCT is improper!\nRun sept with proper BCT at least once\nto cache keys.");
-			gfx_printf("\nPress any key...\n");
+			EPRINTF("Avvio di sept fallito\n""BCT principale non adeguata!\nAvvia sept con la BCT giusta almeno una volta\nper fare il caching delle chiavi.");
+			gfx_printf("\nPremi qualunque tasto...\n");
 			display_backlight_brightness(h_cfg.backlight, 1000);
 			msleep(500);
 			btn_wait();
@@ -270,7 +270,7 @@ int reboot_to_sept(const u8 *tsec_fw, u32 kb, ini_sec_t *cfg_sec)
 
 error:
 	gfx_con.mute = false;
-	EPRINTF("Failed to run sept\n");
+	EPRINTF("Avvio di sept fallito\n");
 
 	btn_wait();
 

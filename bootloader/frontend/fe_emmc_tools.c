@@ -79,7 +79,7 @@ static int _dump_emmc_verify(sdmmc_storage_t *storage, u32 lba_curr, char *outFi
 				if (!sdmmc_storage_read(storage, lba_curr, num, bufEm))
 				{
 					gfx_con.fntsz = 16;
-					EPRINTFARGS("\nFailed to read %d blocks (@LBA %08X),\nfrom eMMC!\n\nVerification failed..\n",
+					EPRINTFARGS("\nLettura di %d blocchi (@LBA %08X),\ndalla eMMC fallita!\n\nVerifica fallita..\n",
 						num, lba_curr);
 
 					f_close(&fp);
@@ -89,7 +89,7 @@ static int _dump_emmc_verify(sdmmc_storage_t *storage, u32 lba_curr, char *outFi
 				if (f_read(&fp, bufSd, num << 9, NULL))
 				{
 					gfx_con.fntsz = 16;
-					EPRINTFARGS("\nFailed to read %d blocks (@LBA %08X),\nfrom sd card!\n\nVerification failed..\n", num, lba_curr);
+					EPRINTFARGS("\nettura di %d blocchi (@LBA %08X),\ndalla scheda sd fallita!\n\nVerifica fallita..\n", num, lba_curr);
 
 					f_close(&fp);
 					return 1;
@@ -102,7 +102,7 @@ static int _dump_emmc_verify(sdmmc_storage_t *storage, u32 lba_curr, char *outFi
 				if (res)
 				{
 					gfx_con.fntsz = 16;
-					EPRINTFARGS("\nSD and eMMC data (@LBA %08X),\ndo not match!\n\nVerification failed..\n", lba_curr);
+					EPRINTFARGS("\nI dati della SD e eMMC (@LBA %08X),\nnon corrispondono!\n\nVerifica fallita..\n", lba_curr);
 
 					f_close(&fp);
 					return 1;
@@ -124,7 +124,7 @@ static int _dump_emmc_verify(sdmmc_storage_t *storage, u32 lba_curr, char *outFi
 			if (btn_read_vol() == (BTN_VOL_UP | BTN_VOL_DOWN))
 			{
 				gfx_con.fntsz = 16;
-				WPRINTF("\n\nVerification was cancelled!");
+				WPRINTF("\n\nVerifica annullata!");
 				gfx_con.fntsz = 8;
 				msleep(1000);
 
@@ -142,7 +142,7 @@ static int _dump_emmc_verify(sdmmc_storage_t *storage, u32 lba_curr, char *outFi
 	else
 	{
 		gfx_con.fntsz = 16;
-		EPRINTF("\nFile not found or could not be loaded.\n\nVerification failed..\n");
+		EPRINTF("\nFile non trovato o non caricato.\n\nVerifica fallita..\n");
 		return 1;
 	}
 }
@@ -179,7 +179,7 @@ static int _dump_emmc_part(char *sd_path, sdmmc_storage_t *storage, emmc_part_t 
 	strcpy(partialIdxFilename, "partial.idx");
 
 	gfx_con.fntsz = 8;
-	gfx_printf("\nSD Card free space: %d MiB, Total backup size %d MiB\n\n",
+	gfx_printf("\nSpazio libero scheda SD: %d MiB, Dimensione totale backup %d MiB\n\n",
 		sd_fs.free_clst * sd_fs.csize >> SECTORS_TO_MIB_COEFF,
 		totalSectors >> SECTORS_TO_MIB_COEFF);
 
@@ -194,12 +194,12 @@ static int _dump_emmc_part(char *sd_path, sdmmc_storage_t *storage, emmc_part_t 
 	{
 		isSmallSdCard = true;
 
-		gfx_printf("%k\nSD card free space is smaller than backup size.%k\n", 0xFFFFBA00, 0xFFCCCCCC);
+		gfx_printf("%k\nSpazio libero scheda SD minore della dimensione del backup.%k\n", 0xFFFFBA00, 0xFFCCCCCC);
 
 		if (!maxSplitParts)
 		{
 			gfx_con.fntsz = 16;
-			EPRINTF("Not enough free space for Partial Backup.");
+			EPRINTF("Non c'e' abbastanza spazio per il backup parziale.");
 
 			return 0;
 		}
@@ -207,7 +207,7 @@ static int _dump_emmc_part(char *sd_path, sdmmc_storage_t *storage, emmc_part_t 
 	// Check if we are continuing a previous raw eMMC or USER partition backup in progress.
 	if (f_open(&partialIdxFp, partialIdxFilename, FA_READ) == FR_OK && totalSectors > (FAT32_FILESIZE_LIMIT / NX_EMMC_BLOCKSIZE))
 	{
-		gfx_printf("%kFound Partial Backup in progress. Continuing...%k\n\n", 0xFFAEFD14, 0xFFCCCCCC);
+		gfx_printf("%kTrovato backup parziale in corso. Ripresa...%k\n\n", 0xFFAEFD14, 0xFFCCCCCC);
 
 		partialDumpInProgress = true;
 		// Force partial dumping, even if the card is larger.
@@ -219,7 +219,7 @@ static int _dump_emmc_part(char *sd_path, sdmmc_storage_t *storage, emmc_part_t 
 		if (!maxSplitParts)
 		{
 			gfx_con.fntsz = 16;
-			EPRINTF("Not enough free space for Partial Backup.");
+			EPRINTF("Non c'e' abbastanza spazio per il backup parziale.");
 
 			return 0;
 		}
@@ -228,7 +228,7 @@ static int _dump_emmc_part(char *sd_path, sdmmc_storage_t *storage, emmc_part_t 
 		maxSplitParts += currPartIdx;
 	}
 	else if (isSmallSdCard)
-		gfx_printf("%kPartial Backup enabled (with %d MiB parts)...%k\n\n", 0xFFFFBA00, multipartSplitSize >> 20, 0xFFCCCCCC);
+		gfx_printf("%kBackup parziale attivato (con parti di %d MiB)...%k\n\n", 0xFFFFBA00, multipartSplitSize >> 20, 0xFFCCCCCC);
 
 	// Check if filesystem is FAT32 or the free space is smaller and backup in parts.
 	if (((sd_fs.fs_type != FS_EXFAT) && totalSectors > (FAT32_FILESIZE_LIMIT / NX_EMMC_BLOCKSIZE)) || isSmallSdCard)
@@ -249,8 +249,8 @@ static int _dump_emmc_part(char *sd_path, sdmmc_storage_t *storage, emmc_part_t 
 		f_close(&fp);
 		gfx_con.fntsz = 16;
 
-		WPRINTF("An existing backup has been detected!");
-		WPRINTF("Press POWER to Continue.\nPress VOL to go to the menu.\n");
+		WPRINTF("Un backup e' gia' presente!");
+		WPRINTF("Premi POWER per Continuare.\nPremi VOL per andare al menu'.\n");
 		msleep(500);
 
 		if (!(btn_wait() & BTN_POWER))
@@ -259,12 +259,12 @@ static int _dump_emmc_part(char *sd_path, sdmmc_storage_t *storage, emmc_part_t 
 		gfx_clear_partial_grey(0x1B, gfx_con.savedy, 48);
 	}
 	gfx_con_setpos(gfx_con.savedx, gfx_con.savedy);
-	gfx_printf("Filename: %s\n\n", outFilename);
+	gfx_printf("Nome file: %s\n\n", outFilename);
 	res = f_open(&fp, outFilename, FA_CREATE_ALWAYS | FA_WRITE);
 	if (res)
 	{
 		gfx_con.fntsz = 16;
-		EPRINTFARGS("Error (%d) creating file %s.\n", res, outFilename);
+		EPRINTFARGS("Errore (%d) creando il file %s.\n", res, outFilename);
 
 		return 0;
 	}
@@ -304,7 +304,7 @@ static int _dump_emmc_part(char *sd_path, sdmmc_storage_t *storage, emmc_part_t 
 			// Verify part.
 			if (_dump_emmc_verify(storage, lbaStartPart, outFilename, part))
 			{
-				EPRINTF("\nPress any key and try again...\n");
+				EPRINTF("\nPremi qualunque tasto e riprova...\n");
 
 				return 0;
 			}
@@ -323,7 +323,7 @@ static int _dump_emmc_part(char *sd_path, sdmmc_storage_t *storage, emmc_part_t 
 				else
 				{
 					gfx_con.fntsz = 16;
-					EPRINTF("\nError creating partial.idx file.\n");
+					EPRINTF("\nErrore nella creazione del file partial.idx.\n");
 
 					return 0;
 				}
@@ -331,11 +331,11 @@ static int _dump_emmc_part(char *sd_path, sdmmc_storage_t *storage, emmc_part_t 
 				// More parts to backup that do not currently fit the sd card free space or fatal error.
 				if (currPartIdx >= maxSplitParts)
 				{
-					gfx_puts("\n\n1. Press any key to unmount SD Card.\n\
-						2. Remove SD Card and move files to free space.\n\
-						   Don\'t move the partial.idx file!\n\
-						3. Re-insert SD Card.\n\
-						4. Select the SAME option again to continue.\n");
+					gfx_puts("\n\n1. Premi qualunque tasto per smontare la scheda SD.\n\
+						2. Rimuovi la scheda SD e sposta i file per liberare spazio.\n\
+						   Non spostare il file partial.idx!\n\
+						3. Inserisci nuovamente la scheda SD.\n\
+						4. Scegli la STESSA opzione nuovamente per continuare.\n");
 					gfx_con.fntsz = 16;
 
 					return 1;
@@ -344,13 +344,13 @@ static int _dump_emmc_part(char *sd_path, sdmmc_storage_t *storage, emmc_part_t 
 
 			// Create next part.
 			gfx_con_setpos(gfx_con.savedx, gfx_con.savedy);
-			gfx_printf("Filename: %s\n\n", outFilename);
+			gfx_printf("Nome del file: %s\n\n", outFilename);
 			lbaStartPart = lba_curr;
 			res = f_open(&fp, outFilename, FA_CREATE_ALWAYS | FA_WRITE);
 			if (res)
 			{
 				gfx_con.fntsz = 16;
-				EPRINTFARGS("Error (%d) creating file %s.\n", res, outFilename);
+				EPRINTFARGS("Errore (%d) nella creazione delò file %s.\n", res, outFilename);
 
 				return 0;
 			}
@@ -366,16 +366,16 @@ static int _dump_emmc_part(char *sd_path, sdmmc_storage_t *storage, emmc_part_t 
 		num = MIN(totalSectors, NUM_SECTORS_PER_ITER);
 		while (!sdmmc_storage_read(storage, lba_curr, num, buf))
 		{
-			EPRINTFARGS("Error reading %d blocks @ LBA %08X,\nfrom eMMC (try %d), retrying...",
+			EPRINTFARGS("Errore nella lettura di %d blocchi @ LBA %08X,\ndalla eMMC (provo %d), riprovo...",
 				num, lba_curr, ++retryCount);
 
 			msleep(150);
 			if (retryCount >= 3)
 			{
 				gfx_con.fntsz = 16;
-				EPRINTFARGS("\nFailed to read %d blocks @ LBA %08X\nfrom eMMC. Aborting..\n",
+				EPRINTFARGS("\nErrore nella lettura di %d blocchi @ LBA %08X\ndalla eMMC. Annullando..\n",
 					num, lba_curr);
-				EPRINTF("\nPress any key and try again...\n");
+				EPRINTF("\nPremi qualunque tasto e riprova...\n");
 
 				f_close(&fp);
 				f_unlink(outFilename);
@@ -387,8 +387,8 @@ static int _dump_emmc_part(char *sd_path, sdmmc_storage_t *storage, emmc_part_t 
 		if (res)
 		{
 			gfx_con.fntsz = 16;
-			EPRINTFARGS("\nFatal error (%d) when writing to SD Card", res);
-			EPRINTF("\nPress any key and try again...\n");
+			EPRINTFARGS("\nErrore fatale (%d) nella scrittura sulla scheda SD", res);
+			EPRINTF("\nPremi qualunque tasto e riprova...\n");
 
 			f_close(&fp);
 			f_unlink(outFilename);
@@ -417,8 +417,8 @@ static int _dump_emmc_part(char *sd_path, sdmmc_storage_t *storage, emmc_part_t 
 		if (btn_read_vol() == (BTN_VOL_UP | BTN_VOL_DOWN))
 		{
 			gfx_con.fntsz = 16;
-			WPRINTF("\n\nThe backup was cancelled!");
-			EPRINTF("\nPress any key...\n");
+			WPRINTF("\n\nIl backup e' stato cancellato!");
+			EPRINTF("\nPremi qualunque tasto...\n");
 			msleep(1500);
 
 			f_close(&fp);
@@ -435,7 +435,7 @@ static int _dump_emmc_part(char *sd_path, sdmmc_storage_t *storage, emmc_part_t 
 	// Verify last part or single file backup.
 	if (_dump_emmc_verify(storage, lbaStartPart, outFilename, part))
 	{
-		EPRINTF("\nPress any key and try again...\n");
+		EPRINTF("\nPremi qualunque tasto e riprova...\n");
 
 		return 0;
 	}
@@ -447,7 +447,7 @@ static int _dump_emmc_part(char *sd_path, sdmmc_storage_t *storage, emmc_part_t 
 	if (isSmallSdCard)
 	{
 		f_unlink(partialIdxFilename);
-		gfx_printf("%k\n\nYou can now join the files\nand get the complete eMMC RAW GPP backup.", 0xFFCCCCCC);
+		gfx_printf("%k\n\nOra puoi unire i file\ne ottenere il backup eMMC RAW GPP completo.", 0xFFCCCCCC);
 	}
 	gfx_puts("\n\n");
 
@@ -474,7 +474,7 @@ static void _dump_emmc_selected(emmcPartType_t dumpType)
 	if (!sd_mount())
 		goto out;
 
-	gfx_puts("Checking for available free space...\n\n");
+	gfx_puts("Verificando lo spazio libero...\n\n");
 	// Get SD Card free space for Partial Backup.
 	f_getfree("", &sd_fs.free_clst, NULL);
 
@@ -482,7 +482,7 @@ static void _dump_emmc_selected(emmcPartType_t dumpType)
 	sdmmc_t sdmmc;
 	if (!sdmmc_storage_init_mmc(&storage, &sdmmc, SDMMC_BUS_WIDTH_8, SDHCI_TIMING_MMC_HS400))
 	{
-		EPRINTF("Failed to init eMMC.");
+		EPRINTF("Inizializzazione della eMMC fallita.");
 		goto out;
 	}
 
@@ -566,10 +566,10 @@ static void _dump_emmc_selected(emmcPartType_t dumpType)
 
 	gfx_putc('\n');
 	timer = get_tmr_s() - timer;
-	gfx_printf("Time taken: %dm %ds.\n", timer / 60, timer % 60);
+	gfx_printf("Tempo impiegato: %dm %ds.\n", timer / 60, timer % 60);
 	sdmmc_storage_end(&storage);
 	if (res)
-		gfx_printf("\n%kFinished and verified!%k\nPress any key...\n", 0xFF96FF00, 0xFFCCCCCC);
+		gfx_printf("\n%kFinito e verificato!%k\nPremi qualunque tasto...\n", 0xFF96FF00, 0xFFCCCCCC);
 
 out:
 	sd_end();
@@ -609,7 +609,7 @@ static int _restore_emmc_part(char *sd_path, sdmmc_storage_t *storage, emmc_part
 		if (f_stat(outFilename, &fno))
 		{
 			// If not, check if there are partial files and the total size matches.
-			gfx_printf("No single file, checking for part files...\n");
+			gfx_printf("Non c'e' un file singolo, verifico se ci sono file parziali...\n");
 
 			outFilename[sdPathLen++] = '.';
 
@@ -619,11 +619,11 @@ static int _restore_emmc_part(char *sd_path, sdmmc_storage_t *storage, emmc_part
 				_update_filename(outFilename, sdPathLen, 99, numSplitParts);
 
 				gfx_con_setpos(gfx_con.savedx, gfx_con.savedy);
-				gfx_printf("\nFilename: %s\n", outFilename);
+				gfx_printf("\nNome del file: %s\n", outFilename);
 
 				if (f_stat(outFilename, &fno))
 				{
-					WPRINTFARGS("Error (%d) file not found '%s'. Aborting...\n", res, outFilename);
+					WPRINTFARGS("Errore (%d) file non trovato '%s'. Annullando...\n", res, outFilename);
 					return 0;
 				}
 				else
@@ -632,12 +632,12 @@ static int _restore_emmc_part(char *sd_path, sdmmc_storage_t *storage, emmc_part
 				numSplitParts++;
 			}
 
-			gfx_printf("\n%X sectors total.\n", (u32)((u64)totalCheckFileSize >> (u64)9));
+			gfx_printf("\n%X settori totali.\n", (u32)((u64)totalCheckFileSize >> (u64)9));
 
 			if ((u32)((u64)totalCheckFileSize >> (u64)9) != totalSectors)
 			{
 				gfx_con.fntsz = 16;
-				EPRINTF("Size of SD Card split backups does not match,\neMMC's selected part size.\n");
+				EPRINTF("La dimensione dei backup divisi sulla scheda SD non coincide con,\nla dimensione delle parti selezionata per la eMMC.\n");
 
 				return 0;
 			}
@@ -651,13 +651,13 @@ static int _restore_emmc_part(char *sd_path, sdmmc_storage_t *storage, emmc_part
 
 	res = f_open(&fp, outFilename, FA_READ);
 	gfx_con_setpos(gfx_con.savedx, gfx_con.savedy);
-	gfx_printf("\nFilename: %s\n", outFilename);
+	gfx_printf("\nNome del file: %s\n", outFilename);
 	if (res)
 	{
 		if (res != FR_NO_FILE)
-			EPRINTFARGS("Error (%d) while opening backup. Continuing...\n", res);
+			EPRINTFARGS("Errore (%d) nell'apertura del backup. Continuando...\n", res);
 		else
-			WPRINTFARGS("Error (%d) file not found. Continuing...\n", res);
+			WPRINTFARGS("Errore (%d) file non trovato. Continuando...\n", res);
 		gfx_con.fntsz = 16;
 
 		return 0;
@@ -665,7 +665,7 @@ static int _restore_emmc_part(char *sd_path, sdmmc_storage_t *storage, emmc_part
 	else if (!use_multipart && (((u32)((u64)f_size(&fp) >> (u64)9)) != totalSectors)) // Check total restore size vs emmc size.
 	{
 		gfx_con.fntsz = 16;
-		EPRINTF("Size of the SD Card backup does not match,\neMMC's selected part size.\n");
+		EPRINTF("La dimensione del backup della scheda SD Card non coincide,\ncon la dimensione delle parti selezionata per la eMMC.\n");
 		f_close(&fp);
 
 		return 0;
@@ -673,7 +673,7 @@ static int _restore_emmc_part(char *sd_path, sdmmc_storage_t *storage, emmc_part
 	else
 	{
 		fileSize = (u64)f_size(&fp);
-		gfx_printf("\nTotal restore size: %d MiB.\n\n",
+		gfx_printf("\nDimensione totale di ripristino: %d MiB.\n\n",
 			(u32)((use_multipart ? (u64)totalCheckFileSize : fileSize) >> (u64)9) >> SECTORS_TO_MIB_COEFF);
 	}
 
@@ -702,7 +702,7 @@ static int _restore_emmc_part(char *sd_path, sdmmc_storage_t *storage, emmc_part
 			// Verify part.
 			if (_dump_emmc_verify(storage, lbaStartPart, outFilename, part))
 			{
-				EPRINTF("\nPress any key and try again...\n");
+				EPRINTF("\nPremi qualunque tasto e riprova...\n");
 
 				return 0;
 			}
@@ -711,7 +711,7 @@ static int _restore_emmc_part(char *sd_path, sdmmc_storage_t *storage, emmc_part
 
 			// Read from next part.
 			gfx_con_setpos(gfx_con.savedx, gfx_con.savedy);
-			gfx_printf("Filename: %s\n\n", outFilename);
+			gfx_printf("Nome del file: %s\n\n", outFilename);
 
 			lbaStartPart = lba_curr;
 
@@ -720,7 +720,7 @@ static int _restore_emmc_part(char *sd_path, sdmmc_storage_t *storage, emmc_part
 			if (res)
 			{
 				gfx_con.fntsz = 16;
-				EPRINTFARGS("Error (%d) opening file %s.\n", res, outFilename);
+				EPRINTFARGS("Errore (%d) nell'apertura del file %s.\n", res, outFilename);
 
 				return 0;
 			}
@@ -735,24 +735,24 @@ static int _restore_emmc_part(char *sd_path, sdmmc_storage_t *storage, emmc_part
 		if (res)
 		{
 			gfx_con.fntsz = 16;
-			EPRINTFARGS("\nFatal error (%d) when reading from SD Card", res);
-			EPRINTF("\nThis device may be in an inoperative state!\n\nPress any key and try again now...\n");
+			EPRINTFARGS("\nError fatale (%d) nella lettura dalla scheda SD", res);
+			EPRINTF("\nQuesto dispositivo potrebbe essere in condizioni inoperabili!\n\nPremi qualunque tasto e riprova ora...\n");
 
 			f_close(&fp);
 			return 0;
 		}
 		while (!sdmmc_storage_write(storage, lba_curr, num, buf))
 		{
-			EPRINTFARGS("Error writing %d blocks @ LBA %08X\nto eMMC (try %d), retrying...",
+			EPRINTFARGS("Errore nella scrittura di %d blocchi @ LBA %08X\nalla eMMC (provo %d), riprovando...",
 				num, lba_curr, ++retryCount);
 
 			msleep(150);
 			if (retryCount >= 3)
 			{
 				gfx_con.fntsz = 16;
-				EPRINTFARGS("\nFailed to write %d blocks @ LBA %08X\nfrom eMMC. Aborting..\n",
+				EPRINTFARGS("\nScrittura di %d blocchi fallita @ LBA %08X\ndalla eMMC. Annullando..\n",
 					num, lba_curr);
-				EPRINTF("\nThis device may be in an inoperative state!\n\nPress any key and try again...\n");
+				EPRINTF("\nQuesto dispositivo potrebbe essere in condizioni inoperabili!\n\nPremi qualunque tasto e riprova...\n");
 
 				f_close(&fp);
 				return 0;
@@ -777,7 +777,7 @@ static int _restore_emmc_part(char *sd_path, sdmmc_storage_t *storage, emmc_part
 	// Verify restored data.
 	if (_dump_emmc_verify(storage, lbaStartPart, outFilename, part))
 	{
-		EPRINTF("\nPress any key and try again...\n");
+		EPRINTF("\nPremi qualunque tasto e riprova...\n");
 
 		return 0;
 	}
@@ -798,15 +798,15 @@ static void _restore_emmc_selected(emmcPartType_t restoreType)
 	tui_sbar(true);
 	gfx_con_setpos(0, 0);
 
-	gfx_printf("%kThis may render the device inoperative!\n\n", 0xFFFFDD00);
-	gfx_printf("Are you really sure?\n\n%k", 0xFFCCCCCC);
+	gfx_printf("%kQuesto potrebbe rendere il dispositivo inoperabile!\n\n", 0xFFFFDD00);
+	gfx_printf("Sei davvero sicuro?\n\n%k", 0xFFCCCCCC);
 	if ((restoreType & PART_BOOT) || (restoreType & PART_GP_ALL))
 	{
-		gfx_puts("The mode you selected will only restore\nthe ");
+		gfx_puts("La modalita' selezionata ripristinera' solo\nle partizioni ");
 		if (restoreType & PART_BOOT)
-			gfx_puts("boot ");
-		gfx_puts("partitions that it can find.\n");
-		gfx_puts("If it is not found, it will be skipped\nand continue with the next.\n\n");
+			gfx_puts("di avvio ");
+		gfx_puts("che trova.\n");
+		gfx_puts("Se non e' trovata, verra' saltata\ne proseguira' con la prossima.\n\n");
 	}
 	gfx_con_getpos(&gfx_con.savedx, &gfx_con.savedy);
 
@@ -814,13 +814,13 @@ static void _restore_emmc_selected(emmcPartType_t restoreType)
 	while (failsafe_wait > 0)
 	{
 		gfx_con_setpos(gfx_con.savedx, gfx_con.savedy);
-		gfx_printf("%kWait... (%ds)    %k", 0xFF888888, failsafe_wait, 0xFFCCCCCC);
+		gfx_printf("%kAspetta... (%ds)    %k", 0xFF888888, failsafe_wait, 0xFFCCCCCC);
 		msleep(1000);
 		failsafe_wait--;
 	}
 	gfx_con_setpos(gfx_con.savedx, gfx_con.savedy);
 
-	gfx_puts("Press POWER to Continue.\nPress VOL to go to the menu.\n\n\n");
+	gfx_puts("Premi POWER per continuare.\nPremi VOL per andare al menu'.\n\n\n");
 
 	u32 btn = btn_wait();
 	if (!(btn & BTN_POWER))
@@ -833,7 +833,7 @@ static void _restore_emmc_selected(emmcPartType_t restoreType)
 	sdmmc_t sdmmc;
 	if (!sdmmc_storage_init_mmc(&storage, &sdmmc, SDMMC_BUS_WIDTH_8, SDHCI_TIMING_MMC_HS400))
 	{
-		EPRINTF("Failed to init eMMC.");
+		EPRINTF("Inizializzazione eMMC fallita.");
 		goto out;
 	}
 
@@ -903,10 +903,10 @@ static void _restore_emmc_selected(emmcPartType_t restoreType)
 
 	gfx_putc('\n');
 	timer = get_tmr_s() - timer;
-	gfx_printf("Time taken: %dm %ds.\n", timer / 60, timer % 60);
+	gfx_printf("Tempo impiegato: %dm %ds.\n", timer / 60, timer % 60);
 	sdmmc_storage_end(&storage);
 	if (res)
-		gfx_printf("\n%kFinished and verified!%k\nPress any key...\n", 0xFF96FF00, 0xFFCCCCCC);
+		gfx_printf("\n%kFinito e verificato!%k\nPremi qualunque tasto...\n", 0xFF96FF00, 0xFFCCCCCC);
 
 out:
 	sd_end();
