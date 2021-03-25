@@ -1488,8 +1488,8 @@ static void _create_tab_tools_emmc_pkg12(lv_theme_t *th, lv_obj_t *parent)
 	label_txt2 = lv_label_create(h1, NULL);
 	lv_label_set_recolor(label_txt2, true);
 	lv_label_set_static_text(label_txt2,
-		"Ti permette di ripristinare le singole partizioni della eMMC/emuMMC\n"
-		"o l'intero volume con un'immagine sulla scheda SD.\n"
+		"Ti permette di ripristinare le singole partizioni della\n"
+		"eMMC/emuMMC o l'intero volume con un'immagine sulla scheda SD.\n"
 		"#C7EA46 Supporta schede SD da# #FF8000 4GB# #C7EA46 in su. #"
 		"#FF8000 FAT32# #C7EA46 e ##FF8000 exFAT##C7EA46 .#");
 	lv_obj_set_style(label_txt2, &hint_small_style);
@@ -1526,8 +1526,9 @@ static void _create_tab_tools_emmc_pkg12(lv_theme_t *th, lv_obj_t *parent)
 	lv_obj_t *label_txt4 = lv_label_create(h2, NULL);
 	lv_label_set_recolor(label_txt4, true);
 	lv_label_set_static_text(label_txt4,
-		"Ti permette di partizionare la Scheda SD per usarla con la #C7EA46 emuMMC#,\n"
-		"#C7EA46 Android# e #C7EA46 Linux#. Puoi anche flashare Linux e Android.\n");
+		"Ti permette di partizionare la Scheda SD per usarla con la\n"
+		"#C7EA46 emuMMC#, #C7EA46 Android# e #C7EA46 Linux#.\n"
+		"Puoi anche flashare Linux e Android.\n");
 	lv_obj_set_style(label_txt4, &hint_small_style);
 	lv_obj_align(label_txt4, btn3, LV_ALIGN_OUT_BOTTOM_LEFT, 0, LV_DPI / 3);
 
@@ -1546,8 +1547,8 @@ static void _create_tab_tools_emmc_pkg12(lv_theme_t *th, lv_obj_t *parent)
 	lv_label_set_recolor(label_txt4, true);
 	lv_label_set_static_text(label_txt4,
 		"#C7EA46 Archiviazione di massa USB#, #C7EA46 gamepad# e altri strumenti USB.\n"
-		"L'archiviazione di massa puo' montare SD, eMMC e emuMMC. L'opzione\n"
-		"gamepad trasforma lo Switch in un dispositivo di input.#");
+		"L'archiviazione di massa puo' montare SD, eMMC e emuMMC.\n"
+		"L'opzione gamepad trasforma lo Switch in un\ndispositivo di input.#");
 	lv_obj_set_style(label_txt4, &hint_small_style);
 	lv_obj_align(label_txt4, btn4, LV_ALIGN_OUT_BOTTOM_LEFT, 0, LV_DPI / 3);
 }
@@ -1589,9 +1590,10 @@ static void _create_tab_tools_arc_autorcm(lv_theme_t *th, lv_obj_t *parent)
 	lv_obj_t *label_txt2 = lv_label_create(h1, NULL);
 	lv_label_set_recolor(label_txt2, true);
 	lv_label_set_static_text(label_txt2,
-		"Ti permette di sistemare il bit di archiviazione per tutte le cartelle, incluse\n"
-		"la radice della scheda SD e le cartelle emuMMC \'Nintendo\'.\n"
-		"#C7EA46 Imposta il bit di archiviazione a cartelle che si chiamano ##FF8000 .[ext]#\n"
+		"Ti permette di sistemare il bit di archiviazione per tutte\n"
+		"le cartelle, incluse la radice della scheda SD e \n"
+		"le cartelle emuMMC \'Nintendo\'.\n"
+		"#C7EA46 Imposta il bit di archiviazione a cartelle con ##FF8000 .[ext]#\n"
 		"#FF8000 Use questa opzione quando hai avvisi di corruzione.#");
 	lv_obj_set_style(label_txt2, &hint_small_style);
 	lv_obj_align(label_txt2, btn, LV_ALIGN_OUT_BOTTOM_LEFT, 0, LV_DPI / 3);

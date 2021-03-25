@@ -1215,8 +1215,8 @@ void create_tab_options(lv_theme_t *th, lv_obj_t *parent)
 	label_txt2 = lv_label_create(l_cont, NULL);
 	lv_label_set_recolor(label_txt2, true);
 	lv_label_set_static_text(label_txt2,
-		"Scegli per quanto mostrare il bootlogo quando l'autoboot e' attivo.\n"
-		"#C7EA46 Puoi premere# #FF8000 VOL-# #C7EA46 durante quel ritardo per entrare nel menu' di hekate.#\n");
+		"Scegli per quanto mostrare il bootlogo quando l'autoboot\n"
+		"e' attivo.#C7EA46 Puoi premere# #FF8000 VOL-# #C7EA46 durante\nquel ritardo per entrare nel menu' di hekate.#\n");
 	lv_obj_set_style(label_txt2, &hint_small_style);
 	lv_obj_align(label_txt2, label_txt, LV_ALIGN_OUT_BOTTOM_LEFT, 0, LV_DPI / 4);
 
@@ -1232,8 +1232,8 @@ void create_tab_options(lv_theme_t *th, lv_obj_t *parent)
 	lv_label_set_recolor(label_txt2, true);
 	lv_label_set_static_text(label_txt2,
 		"Controlla i fuse e applica le patch automaticamente\n"
-		"se trova un firmware superiore. Ora e' una config globale e impostata\n"
-		"ad auto di default. (ATTIVO: Auto)\n\n\n");
+		"se trova un firmware superiore. Ora e' una config globale\n"
+		"e impostata ad auto di default. (ATTIVO: Auto)\n\n\n");
 	lv_obj_set_style(label_txt2, &hint_small_style);
 	lv_obj_align(label_txt2, btn2, LV_ALIGN_OUT_BOTTOM_LEFT, LV_DPI / 4, LV_DPI / 12);
 
@@ -1285,8 +1285,8 @@ void create_tab_options(lv_theme_t *th, lv_obj_t *parent)
 	label_txt2 = lv_label_create(sw_h3, NULL);
 	lv_label_set_recolor(label_txt2, true);
 	lv_label_set_static_text(label_txt2,
-		"Se #FF8000 FSS0# e' utilizzato nella entry di avvio selezionata, il binario della\n"
-		"reboot 2 payload verra' controllato e forzatamente aggiornato da hekate.\n\n\n\n");
+		"Se #FF8000 FSS0# e' utilizzato nella entry di avvio selezionata, il binario\n"
+		"della reboot 2 payload verra' controllato e forzatamente\naggiornato da hekate.\n\n\n\n");
 	lv_obj_set_style(label_txt2, &hint_small_style);
 	lv_obj_align(label_txt2, btn4, LV_ALIGN_OUT_BOTTOM_LEFT, LV_DPI / 4, LV_DPI / 12);
 

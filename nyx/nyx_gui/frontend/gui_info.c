@@ -541,9 +541,9 @@ out:
 
 static lv_res_t _create_window_fuses_info_status(lv_obj_t *btn)
 {
-	lv_obj_t *win = nyx_create_standard_window(SYMBOL_CHIP" Info Fuses HW & Cached");
-	lv_win_add_btn(win, NULL, SYMBOL_DOWNLOAD" Dump fuses", _fuse_dump_window_action);
-	lv_win_add_btn(win, NULL, SYMBOL_INFO" CAL0 Info", _create_mbox_cal0);
+	lv_obj_t *win = nyx_create_standard_window(SYMBOL_CHIP" Info Fuse HW & In Cache");
+	lv_win_add_btn(win, NULL, SYMBOL_DOWNLOAD" Salva fuse", _fuse_dump_window_action);
+	lv_win_add_btn(win, NULL, SYMBOL_INFO" Info CAL0", _create_mbox_cal0);
 
 	lv_obj_t *desc = lv_cont_create(win, NULL);
 	lv_obj_set_size(desc, LV_HOR_RES / 2 / 5 * 2, LV_VER_RES - (LV_DPI * 11 / 7) - 5);
@@ -556,14 +556,14 @@ static lv_res_t _create_window_fuses_info_status(lv_obj_t *btn)
 	lv_label_set_static_text(lb_desc,
 		"SKU:\n"
 		"DRAM ID:\n"
-		"#FF8000 Fuses Bruciati (ODM 7/6):#\n"
+		"#FF8000 Fuse Bruciati (ODM 7/6):#\n"
 		"Campi ODM (4, 6, 7):\n"
 		"Secure Boot key (SBK):\n"
 		"Device key (DK):\n"
 		"USB Stack:\n"
 		"Revisione Test Finale:\n"
 		"Revisione Test del Chip:\n"
-		"Dimensioni ipatch del Bootrom:\n"
+		"Dim. ipatch del Bootrom:\n"
 		"CPU Speedo 0 (CPU Val):\n"
 		"CPU Speedo 1:\n"
 		"CPU Speedo 2 (GPU Val):\n"
@@ -1604,11 +1604,11 @@ static lv_res_t _create_window_emmc_info_status(lv_obj_t *btn)
 			"Classi Cmd:\n"
 			"Tasso Max:\n"
 			"Tasso Attuale:\n"
-			"Supporto di Tipo:\n\n"
+			"Tipo Supporto:\n\n"
 			"Cache Scrittura:\n"
 			"Enhanced Area:\n"
 			"Vita stimata:\n"
-			"Utilizzata riservata:"
+			"Spazio riservato:"
 		);
 		lv_obj_set_width(lb_desc, lv_obj_get_width(desc));
 
@@ -1916,9 +1916,9 @@ static lv_res_t _create_window_sdcard_info_status(lv_obj_t *btn)
 
 		lv_label_set_text(lb_desc4,
 			"#00DDFF Errori SDMMC1:#\n"
-			"Fallimenti init:\n"
-			"Fallimenti lettura/scrittura:\n"
-			"Errori lettura/scrittura:"
+			"Problemi init:\n"
+			"Prob. lett./scritt.:\n"
+			"Err. lett./scritt.:"
 		);
 		lv_obj_set_size(desc4, LV_HOR_RES / 2 / 5 * 2, LV_VER_RES - (LV_DPI * 11 / 8) * 4);
 		lv_obj_set_width(lb_desc4, lv_obj_get_width(desc4));
@@ -1966,11 +1966,11 @@ static lv_res_t _create_window_battery_status(lv_obj_t *btn)
 		"Capacita' (design):\n"
 		"Corrente attuale:\n"
 		"Corrente media:\n"
-		"Voltaggio attuale:\n"
-		"Voltaggio a circuito aperto:\n"
-		"Min voltaggio raggiunto:\n"
-		"Max voltaggio raggiunto:\n"
-		"Voltaggio a vuoto:\n"
+		"Volt. attuale:\n"
+		"Volt. circuito aperto:\n"
+		"Min volt. raggiunto:\n"
+		"Max volt. raggiunto:\n"
+		"Volt. a vuoto:\n"
 		"Temperatura batteria:\n\n"
 		"#00DDFF Info PMIC IC:#\n"
 		"Main PMIC:\n\n"
@@ -2277,9 +2277,9 @@ void create_tab_info(lv_theme_t *th, lv_obj_t *parent)
 	lv_obj_t *label_txt4 = lv_label_create(h1, NULL);
 	lv_label_set_recolor(label_txt4, true);
 	lv_label_set_static_text(label_txt4,
-		"Visualizza e salva i #C7EA46 Fuses# in cache e #C7EA46 i KFuses#.\n"
-		"I Fuses contengono info sulla SoC/SKU e KFuses chiavi HDCP.\n"
-		"Puoi anche vedere info riguardo #C7EA46 DRAM#, #C7EA46 Schermo# e #C7EA46 Pannello Touch#.");
+		"Visualizza e salva i #C7EA46 Fuse# in cache e #C7EA46 i KFuse#.\n"
+		"I Fuse contengono info sulla SoC/SKU e i KFuse le chiavi HDCP.\n"
+		"Puoi anche vedere info riguardo #C7EA46 DRAM#, #C7EA46 Schermo#\ne #C7EA46 Pannello Touch#.");
 	lv_obj_set_style(label_txt4, &hint_small_style);
 	lv_obj_align(label_txt4, btn3, LV_ALIGN_OUT_BOTTOM_LEFT, 0, LV_DPI / 3);
 
@@ -2327,7 +2327,7 @@ void create_tab_info(lv_theme_t *th, lv_obj_t *parent)
 	lv_obj_t *label_txt5 = lv_label_create(h2, NULL);
 	lv_label_set_recolor(label_txt5, true);
 	lv_label_set_static_text(label_txt5,
-		"Visualizza info riguardo la eMMC o microSD e le loro liste di partizioni.\n"
+		"Visualizza info riguardo la eMMC o microSD\ne le loro liste di partizioni.\n"
 		"Inoltre puoi fare benchmark sulle velocita' di lettura.");
 	lv_obj_set_style(label_txt5, &hint_small_style);
 	lv_obj_align(label_txt5, btn5, LV_ALIGN_OUT_BOTTOM_LEFT, 0, LV_DPI / 3);

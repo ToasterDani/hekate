@@ -1131,7 +1131,7 @@ out0:;
 	lv_label_set_static_text(label_sep, "");
 
 	lv_obj_t *label_txt3 = lv_label_create(h2, NULL);
-	lv_label_set_static_text(label_txt3, "Basata su file su SD");
+	lv_label_set_static_text(label_txt3, "emuMMC a file su SD");
 	lv_obj_set_style(label_txt3, lv_theme_get_current()->label.prim);
 	lv_obj_align(label_txt3, label_sep, LV_ALIGN_OUT_BOTTOM_LEFT, LV_DPI / 4, -LV_DPI / 7);
 
@@ -1252,9 +1252,9 @@ lv_res_t create_win_emummc_tools(lv_obj_t *btn)
 	label_txt2 = lv_label_create(h1, NULL);
 	lv_label_set_recolor(label_txt2, true);
 	lv_label_set_static_text(label_txt2,
-		"Scegli tra immagini create nella cartella emuMMC\n"
-		"o nelle partizioni della scheda SD. Puoi averne al massimo 3 a partizione\n"
-		"e infinite a file.");
+		"Scegli tra immagini create nella cartella emuMMC o nelle\n"
+		"partizioni della scheda SD. Puoi averne al massimo 3 a\n"
+		"partizione e infinite a file.");
 
 	lv_obj_set_style(label_txt2, &hint_small_style);
 	lv_obj_align(label_txt2, btn2, LV_ALIGN_OUT_BOTTOM_LEFT, 0, LV_DPI / 3);
@@ -1290,8 +1290,9 @@ lv_res_t create_win_emummc_tools(lv_obj_t *btn)
 	lv_obj_t *label_txt4 = lv_label_create(h2, NULL);
 	lv_label_set_recolor(label_txt4, true);
 	lv_label_set_static_text(label_txt4,
-		"Ti permette di creare una nuova emuMMC #C7EA46 a File su SD# o #C7EA46 a partizione su SD#\n"
-		"Puoi crearla dalla eMMC o da un backup della eMMC.");
+		"Ti permette di creare una nuova emuMMC #C7EA46 a File su SD# o\n"
+		"#C7EA46 a partizione su SD#. Puoi crearla dalla eMMC o da\n" 
+		"un backup della eMMC.");
 
 	lv_obj_set_style(label_txt4, &hint_small_style);
 	lv_obj_align(label_txt4, btn3, LV_ALIGN_OUT_BOTTOM_LEFT, 0, LV_DPI / 3);
@@ -1307,7 +1308,7 @@ lv_res_t create_win_emummc_tools(lv_obj_t *btn)
 	label_txt4 = lv_label_create(h2, NULL);
 	lv_label_set_recolor(label_txt4, true);
 	lv_label_set_static_text(label_txt4,
-		"Migra un backup a #C7EA46 File su SD# o ripara una esistente #C7EA46 a partizione grezza su SD#.\n"
+		"Migra un backup a #C7EA46 File su SD# o ripara una esistente\n#C7EA46 a partizione grezza su SD#.\n"
 		"Inoltre permette di migrare da altre implementazioni\ndella emunand.");
 	lv_obj_set_style(label_txt4, &hint_small_style);
 	lv_obj_align(label_txt4, btn4, LV_ALIGN_OUT_BOTTOM_LEFT, 0, LV_DPI / 3);
