@@ -68,7 +68,7 @@ void dump_packages12()
 
 	if (!sdmmc_storage_init_mmc(&emmc_storage, &emmc_sdmmc, SDMMC_BUS_WIDTH_8, SDHCI_TIMING_MMC_HS400))
 	{
-		EPRINTF("Failed to init eMMC.");
+		EPRINTF("Inizializzazione eMMC fallita.");
 		goto out_free;
 	}
 	sdmmc_storage_set_mmc_partition(&emmc_storage, EMMC_BOOT0);
@@ -78,12 +78,12 @@ void dump_packages12()
 	const pkg1_id_t *pkg1_id = pkg1_identify(pkg1);
 	if (!pkg1_id)
 	{
-		EPRINTF("Unknown pkg1 version for reading\nTSEC firmware.");
+		EPRINTF("Versione pkg1 sconosciuta per la lettura del\nfirmware TSEC.");
 		// Dump package1.
 		emmcsn_path_impl(path, "/pkg1", "pkg1_enc.bin", &emmc_storage);
 		if (sd_save_to_file(pkg1, 0x40000, path))
 			goto out_free;
-		gfx_puts("\nEnc pkg1 dumped to pkg1_enc.bin\n");
+		gfx_puts("\nPkg1 criptato salvato come pkg1_enc.bin\n");
 
 		goto out_free;
 	}
@@ -102,12 +102,12 @@ void dump_packages12()
 			b_cfg.autoboot = 0;
 			b_cfg.autoboot_list = 0;
 
-			gfx_printf("sept will run to get the keys.\nThen rerun this option.");
+			gfx_printf("sept partira' per prendere le chiavi.\nPoi avvia nuovamente questa opzione.");
 			btn_wait();
 
 			if (!reboot_to_sept((u8 *)tsec_ctxt.fw, kb, NULL))
 			{
-				gfx_printf("Failed to run sept\n");
+				gfx_printf("Avvio di sept fallito\n");
 				goto out_free;
 			}
 		}
@@ -145,37 +145,37 @@ void dump_packages12()
 		}
 
 		// Display info.
-		gfx_printf("%kNX Bootloader size:  %k0x%05X\n\n", 0xFFC7EA46, 0xFFCCCCCC, hdr_pk11->ldr_size);
+		gfx_printf("%kDimensione Bootloader NX:  %k0x%05X\n\n", 0xFFC7EA46, 0xFFCCCCCC, hdr_pk11->ldr_size);
 
-		gfx_printf("%kSecure monitor addr: %k0x%05X\n", 0xFFC7EA46, 0xFFCCCCCC, pkg1_id->secmon_base);
-		gfx_printf("%kSecure monitor size: %k0x%05X\n\n", 0xFFC7EA46, 0xFFCCCCCC, hdr_pk11->sm_size);
+		gfx_printf("%kIndirizzo Secure monitor: %k0x%05X\n", 0xFFC7EA46, 0xFFCCCCCC, pkg1_id->secmon_base);
+		gfx_printf("%kDimensione Secure monitor: %k0x%05X\n\n", 0xFFC7EA46, 0xFFCCCCCC, hdr_pk11->sm_size);
 
-		gfx_printf("%kWarmboot addr:       %k0x%05X\n", 0xFFC7EA46, 0xFFCCCCCC, pkg1_id->warmboot_base);
-		gfx_printf("%kWarmboot size:       %k0x%05X\n\n", 0xFFC7EA46, 0xFFCCCCCC, hdr_pk11->wb_size);
+		gfx_printf("%kIndirizzo Warmboot:       %k0x%05X\n", 0xFFC7EA46, 0xFFCCCCCC, pkg1_id->warmboot_base);
+		gfx_printf("%Dimensione kWarmboot:       %k0x%05X\n\n", 0xFFC7EA46, 0xFFCCCCCC, hdr_pk11->wb_size);
 
 		// Dump package1.1.
 		emmcsn_path_impl(path, "/pkg1", "pkg1_decr.bin", &emmc_storage);
 		if (sd_save_to_file(pkg1, 0x40000, path))
 			goto out_free;
-		gfx_puts("\npkg1 dumped to pkg1_decr.bin\n");
+		gfx_puts("\npkg1 salvato come pkg1_decr.bin\n");
 
 		// Dump nxbootloader.
 		emmcsn_path_impl(path, "/pkg1", "nxloader.bin", &emmc_storage);
 		if (sd_save_to_file(loader, hdr_pk11->ldr_size, path))
 			goto out_free;
-		gfx_puts("NX Bootloader dumped to nxloader.bin\n");
+		gfx_puts("NX Bootloader salvato come nxloader.bin\n");
 
 		// Dump secmon.
 		emmcsn_path_impl(path, "/pkg1", "secmon.bin", &emmc_storage);
 		if (sd_save_to_file(secmon, hdr_pk11->sm_size, path))
 			goto out_free;
-		gfx_puts("Secure Monitor dumped to secmon.bin\n");
+		gfx_puts("Secure Monitor salvato come secmon.bin\n");
 
 		// Dump warmboot.
 		emmcsn_path_impl(path, "/pkg1", "warmboot.bin", &emmc_storage);
 		if (sd_save_to_file(warmboot, hdr_pk11->wb_size, path))
 			goto out_free;
-		gfx_puts("Warmboot dumped to warmboot.bin\n\n\n");
+		gfx_puts("Warmboot salvato come warmboot.bin\n\n\n");
 	}
 
 	// Dump package2.1.
@@ -203,7 +203,7 @@ void dump_packages12()
 	pkg2_hdr_t *pkg2_hdr = pkg2_decrypt(pkg2, kb);
 	if (!pkg2_hdr)
 	{
-		gfx_printf("Pkg2 decryption failed!\n");
+		gfx_printf("Decrittazione Pkg2 fallita!\n");
 		goto out;
 	}
 
@@ -215,13 +215,13 @@ void dump_packages12()
 	emmcsn_path_impl(path, "/pkg2", "pkg2_decr.bin", &emmc_storage);
 	if (sd_save_to_file(pkg2, pkg2_hdr->sec_size[PKG2_SEC_KERNEL] + pkg2_hdr->sec_size[PKG2_SEC_INI1], path))
 		goto out;
-	gfx_puts("\npkg2 dumped to pkg2_decr.bin\n");
+	gfx_puts("\npkg2 salvato come pkg2_decr.bin\n");
 
 	// Dump kernel.
 	emmcsn_path_impl(path, "/pkg2", "kernel.bin", &emmc_storage);
 	if (sd_save_to_file(pkg2_hdr->data, pkg2_hdr->sec_size[PKG2_SEC_KERNEL], path))
 		goto out;
-	gfx_puts("Kernel dumped to kernel.bin\n");
+	gfx_puts("Kernel salvato come kernel.bin\n");
 
 	// Dump INI1.
 	emmcsn_path_impl(path, "/pkg2", "ini1.bin", &emmc_storage);
@@ -237,15 +237,15 @@ void dump_packages12()
 	{
 		if (sd_save_to_file(pkg2_hdr->data + ini1_off, ini1_size, path))
 			goto out;
-		gfx_puts("INI1 dumped to ini1.bin\n");
+		gfx_puts("INI1 salvato come ini1.bin\n");
 	}
 	else
 	{
-		gfx_puts("Failed to dump INI1!\n");
+		gfx_puts("Salvataggio di INI1 fallito!\n");
 		goto out;
 	}
 
-	gfx_puts("\nDone. Press any key...\n");
+	gfx_puts("\nFatto. Premi qualunque tasto...\n");
 
 out:
 	nx_emmc_gpt_free(&gpt);
@@ -271,7 +271,7 @@ void _toggle_autorcm(bool enable)
 
 	if (!sdmmc_storage_init_mmc(&emmc_storage, &emmc_sdmmc, SDMMC_BUS_WIDTH_8, SDHCI_TIMING_MMC_HS400))
 	{
-		EPRINTF("Failed to init eMMC.");
+		EPRINTF("Inizializzazione eMMC fallita.");
 		goto out;
 	}
 
@@ -305,10 +305,10 @@ void _toggle_autorcm(bool enable)
 	sdmmc_storage_end(&emmc_storage);
 
 	if (enable)
-		gfx_printf("%kAutoRCM mode enabled!%k", 0xFFFFBA00, 0xFFCCCCCC);
+		gfx_printf("%kModalita' AutoRCM attivata!%k", 0xFFFFBA00, 0xFFCCCCCC);
 	else
-		gfx_printf("%kAutoRCM mode disabled!%k", 0xFF96FF00, 0xFFCCCCCC);
-	gfx_printf("\n\nPress any key...\n");
+		gfx_printf("%kModalita' AutoRCM disattivata!%k", 0xFF96FF00, 0xFFCCCCCC);
+	gfx_printf("\n\nPremi qualunque tasto...\n");
 
 out:
 	btn_wait();
@@ -324,8 +324,8 @@ void menu_autorcm()
 
 	if (h_cfg.rcm_patched)
 	{
-		gfx_printf("%kThis device is RCM patched and\nAutoRCM function is disabled.\n\n"
-			"In case %kAutoRCM%k is enabled\nthis will %kBRICK%k the device PERMANENTLY!!%k",
+		gfx_printf("%kQuesto dispositivo ha la modalita' RCM patchata e\nquindi la funzione AutoRCM e' disattivata.\n\n"
+			"Nel caso in cui si attivi %kAutoRCM%k\nsi potrebbe %kBRICKARE%k il dispositivo PERMANENTEMENTE!!%k",
 			0xFFFFDD00, 0xFFFF0000, 0xFFFFDD00, 0xFFFF0000, 0xFFFFDD00, 0xFFCCCCCC);
 		btn_wait();
 
@@ -337,7 +337,7 @@ void menu_autorcm()
 
 	if (!sdmmc_storage_init_mmc(&emmc_storage, &emmc_sdmmc, SDMMC_BUS_WIDTH_8, SDHCI_TIMING_MMC_HS400))
 	{
-		EPRINTF("Failed to init eMMC.");
+		EPRINTF("Inizializzazione eMMC fallita.");
 		btn_wait();
 
 		return;
@@ -363,7 +363,7 @@ void menu_autorcm()
 	ment_t *ments = (ment_t *)malloc(sizeof(ment_t) * 6);
 
 	ments[0].type = MENT_BACK;
-	ments[0].caption = "Back";
+	ments[0].caption = "Indietro";
 
 	ments[1].type = MENT_CHGLINE;
 
@@ -371,23 +371,23 @@ void menu_autorcm()
 	ments[3].type = MENT_CHGLINE;
 	if (disabled)
 	{
-		ments[2].caption = "Status: Disabled!";
+		ments[2].caption = "Stato: Disattivato!";
 		ments[2].color = 0xFF96FF00;
-		ments[4].caption = "Enable AutoRCM";
+		ments[4].caption = "Attiva AutoRCM";
 		ments[4].handler = _enable_autorcm;
 	}
 	else
 	{
-		ments[2].caption = "Status: Enabled!";
+		ments[2].caption = "Stato: Attivato!";
 		ments[2].color = 0xFFFFBA00;
-		ments[4].caption = "Disable AutoRCM";
+		ments[4].caption = "Disattiva AutoRCM";
 		ments[4].handler = _disable_autorcm;
 	}
 	ments[4].type = MENT_HDLR_RE;
 	ments[4].data = NULL;
 
 	memset(&ments[5], 0, sizeof(ment_t));
-	menu_t menu = {ments, "This corrupts BOOT0!", 0, 0};
+	menu_t menu = {ments, "Questo corrompera' BOOT0!", 0, 0};
 
 	tui_do_menu(&menu);
 }
@@ -496,9 +496,9 @@ void _fix_sd_attr(u32 type)
 			break;
 		}
 
-		gfx_printf("Traversing all %s files!\nThis may take some time...\n\n", label);
+		gfx_printf("Attraversando tutti i %s file!\nPotrebbe richiedere un po' di tempo...\n\n", label);
 		_fix_attributes(path, &total, type, type);
-		gfx_printf("%kTotal archive bits cleared: %d!%k\n\nDone! Press any key...", 0xFF96FF00, total, 0xFFCCCCCC);
+		gfx_printf("%kBit di archiviazione azzerati: %d!%k\n\nFatto! Premi qualunque tasto...", 0xFF96FF00, total, 0xFFCCCCCC);
 		sd_end();
 	}
 	btn_wait();

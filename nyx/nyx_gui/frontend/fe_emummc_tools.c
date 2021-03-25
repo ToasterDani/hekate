@@ -147,7 +147,7 @@ static int _dump_emummc_file_part(emmc_tool_gui_t *gui, char *sd_path, sdmmc_sto
 	char *outFilename = sd_path;
 	u32 sdPathLen = strlen(sd_path);
 
-	s_printf(gui->txt_buf, "#96FF00 SD Card free space:# %d MiB\n#96FF00 Total backup size:# %d MiB\n\n",
+	s_printf(gui->txt_buf, "#96FF00 Spazio libero scheda SD:# %d MiB\n#96FF00 Dimensione totale backup:# %d MiB\n\n",
 		sd_fs.free_clst * sd_fs.csize >> SECTORS_TO_MIB_COEFF,
 		totalSectors >> SECTORS_TO_MIB_COEFF);
 	lv_label_ins_text(gui->label_info, LV_LABEL_POS_LAST, gui->txt_buf);
@@ -160,7 +160,7 @@ static int _dump_emummc_file_part(emmc_tool_gui_t *gui, char *sd_path, sdmmc_sto
 	// Check if the USER partition or the RAW eMMC fits the sd card free space.
 	if (totalSectors > (sd_fs.free_clst * sd_fs.csize))
 	{
-		s_printf(gui->txt_buf, "\n#FFDD00 Not enough free space for Partial Backup!#\n");
+		s_printf(gui->txt_buf, "\n#FFDD00 Non c'e' abbastanza spazio per il backup parziale!#\n");
 		lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, gui->txt_buf);
 		manual_system_maintenance(true);
 
@@ -178,7 +178,7 @@ static int _dump_emummc_file_part(emmc_tool_gui_t *gui, char *sd_path, sdmmc_sto
 	}
 
 	FIL fp;
-	s_printf(gui->txt_buf, "#96FF00 Filepath:#\n%s\n#96FF00 Filename:# #FF8000 %s#",
+	s_printf(gui->txt_buf, "#96FF00 Percorso file:#\n%s\n#96FF00 Nome file:# #FF8000 %s#",
 		gui->base_path, outFilename + strlen(gui->base_path));
 	lv_label_ins_text(gui->label_info, LV_LABEL_POS_LAST, gui->txt_buf);
 	manual_system_maintenance(true);
@@ -186,7 +186,7 @@ static int _dump_emummc_file_part(emmc_tool_gui_t *gui, char *sd_path, sdmmc_sto
 	res = f_open(&fp, outFilename, FA_CREATE_ALWAYS | FA_WRITE);
 	if (res)
 	{
-		s_printf(gui->txt_buf, "\n#FF0000 Error (%d) while creating#\n#FFDD00 %s#\n", res, outFilename);
+		s_printf(gui->txt_buf, "\n#FF0000 Errore (%d) nella creazione di #\n#FFDD00 %s#\n", res, outFilename);
 		lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, gui->txt_buf);
 		manual_system_maintenance(true);
 
@@ -232,7 +232,7 @@ static int _dump_emummc_file_part(emmc_tool_gui_t *gui, char *sd_path, sdmmc_sto
 			res = f_open(&fp, outFilename, FA_CREATE_ALWAYS | FA_WRITE);
 			if (res)
 			{
-				s_printf(gui->txt_buf, "\n#FF0000 Error (%d) while creating#\n#FFDD00 %s#\n", res, outFilename);
+				s_printf(gui->txt_buf, "\n#FF0000 Errore (%d) nella creazione di #\n#FFDD00 %s#\n", res, outFilename);
 				lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, gui->txt_buf);
 				manual_system_maintenance(true);
 
@@ -248,7 +248,7 @@ static int _dump_emummc_file_part(emmc_tool_gui_t *gui, char *sd_path, sdmmc_sto
 		// Check for cancellation combo.
 		if (btn_read_vol() == (BTN_VOL_UP | BTN_VOL_DOWN))
 		{
-			s_printf(gui->txt_buf, "\n#FFDD00 The emuMMC was cancelled!#\n");
+			s_printf(gui->txt_buf, "\n#FFDD00 La emuMMC e' stata annullata!#\n");
 			lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, gui->txt_buf);
 			manual_system_maintenance(true);
 
@@ -266,8 +266,8 @@ static int _dump_emummc_file_part(emmc_tool_gui_t *gui, char *sd_path, sdmmc_sto
 		while (!sdmmc_storage_read(storage, lba_curr, num, buf))
 		{
 			s_printf(gui->txt_buf,
-				"\n#FFDD00 Error reading %d blocks @ LBA %08X,#\n"
-				"#FFDD00 from eMMC (try %d). #",
+				"\n#FFDD00 Errore nella lettura di %d blocchi @ LBA %08X,#\n"
+				"#FFDD00 dalla eMMC (provo %d). #",
 				num, lba_curr, ++retryCount);
 			lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, gui->txt_buf);
 			manual_system_maintenance(true);
@@ -275,7 +275,7 @@ static int _dump_emummc_file_part(emmc_tool_gui_t *gui, char *sd_path, sdmmc_sto
 			msleep(150);
 			if (retryCount >= 3)
 			{
-				s_printf(gui->txt_buf, "#FF0000 Aborting...#\nPlease try again...\n");
+				s_printf(gui->txt_buf, "#FF0000 Annullamento...#\nSi prega di riprovare...\n");
 				lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, gui->txt_buf);
 				manual_system_maintenance(true);
 
@@ -287,7 +287,7 @@ static int _dump_emummc_file_part(emmc_tool_gui_t *gui, char *sd_path, sdmmc_sto
 			}
 			else
 			{
-				s_printf(gui->txt_buf, "#FFDD00 Retrying...#");
+				s_printf(gui->txt_buf, "#FFDD00 Riprovando...#");
 				lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, gui->txt_buf);
 				manual_system_maintenance(true);
 			}
@@ -301,7 +301,7 @@ static int _dump_emummc_file_part(emmc_tool_gui_t *gui, char *sd_path, sdmmc_sto
 
 		if (res)
 		{
-			s_printf(gui->txt_buf, "\n#FF0000 Fatal error (%d) when writing to SD Card#\nPlease try again...\n", res);
+			s_printf(gui->txt_buf, "\n#FF0000 Errore fatale (%d) nella scrittura sulla scheda SD#\nSi prega di riprovare...\n", res);
 			lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, gui->txt_buf);
 			manual_system_maintenance(true);
 
@@ -363,11 +363,11 @@ void dump_emummc_file(emmc_tool_gui_t *gui)
 
 	if (!sd_mount())
 	{
-		lv_label_set_text(gui->label_info, "#FFDD00 Failed to init SD!#");
+		lv_label_set_text(gui->label_info, "#FFDD00 Inizializzazione SD fallita!#");
 		goto out;
 	}
 
-	lv_label_set_text(gui->label_info, "Checking for available free space...");
+	lv_label_set_text(gui->label_info, "Controllando lo spazio libero disponibile...");
 	manual_system_maintenance(true);
 
 	// Get SD Card free space for Partial Backup.
@@ -375,7 +375,7 @@ void dump_emummc_file(emmc_tool_gui_t *gui)
 
 	if (!sdmmc_storage_init_mmc(&emmc_storage, &emmc_sdmmc, SDMMC_BUS_WIDTH_8, SDHCI_TIMING_MMC_HS400))
 	{
-		lv_label_set_text(gui->label_info, "#FFDD00 Failed to init eMMC!#");
+		lv_label_set_text(gui->label_info, "#FFDD00 Inizializzazione eMMC fallita!#");
 		goto out;
 	}
 
@@ -426,11 +426,11 @@ void dump_emummc_file(emmc_tool_gui_t *gui)
 
 		if (!res)
 		{
-			s_printf(txt_buf, "#FFDD00 Failed!#\n");
+			s_printf(txt_buf, "#FFDD00 Fallito!#\n");
 			goto out_failed;
 		}
 		else
-			s_printf(txt_buf, "Done!\n");
+			s_printf(txt_buf, "Fatto!\n");
 
 		lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, txt_buf);
 		manual_system_maintenance(true);
@@ -460,9 +460,9 @@ void dump_emummc_file(emmc_tool_gui_t *gui)
 		res = _dump_emummc_file_part(gui, sdPath, &emmc_storage, &rawPart);
 
 		if (!res)
-			s_printf(txt_buf, "#FFDD00 Failed!#\n");
+			s_printf(txt_buf, "#FFDD00 Fallito!#\n");
 		else
-			s_printf(txt_buf, "Done!\n");
+			s_printf(txt_buf, "Fatto!\n");
 
 		lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, txt_buf);
 		manual_system_maintenance(true);
@@ -474,7 +474,7 @@ out_failed:
 
 	if (res)
 	{
-		s_printf(txt_buf, "Time taken: %dm %ds.\nFinished!", timer / 60, timer % 60);
+		s_printf(txt_buf, "Tempo impiegato: %dm %ds.\nFinito!", timer / 60, timer % 60);
 		gui->base_path[strlen(gui->base_path) - 5] = '\0';
 		strcpy(sdPath, gui->base_path);
 		strcat(sdPath, "file_based");
@@ -486,7 +486,7 @@ out_failed:
 		save_emummc_cfg(0, 0, gui->base_path);
 	}
 	else
-		s_printf(txt_buf, "Time taken: %dm %ds.", timer / 60, timer % 60);
+		s_printf(txt_buf, "Tempo impiegato: %dm %ds.", timer / 60, timer % 60);
 
 	lv_label_set_text(gui->label_finish, txt_buf);
 
@@ -514,7 +514,7 @@ static int _dump_emummc_raw_part(emmc_tool_gui_t *gui, int active_part, int part
 	lv_label_set_text(gui->label_pct, " "SYMBOL_DOT" 0%");
 	manual_system_maintenance(true);
 
-	s_printf(gui->txt_buf, "#96FF00 Base folder:#\n%s\n#96FF00 Partition offset:# #FF8000 0x%08X#",
+	s_printf(gui->txt_buf, "#96FF00 Cartella base:#\n%s\n#96FF00 Offset Partizione:# #FF8000 0x%08X#",
 		gui->base_path, sd_part_off);
 	lv_label_ins_text(gui->label_info, LV_LABEL_POS_LAST, gui->txt_buf);
 	manual_system_maintenance(true);
@@ -532,7 +532,7 @@ static int _dump_emummc_raw_part(emmc_tool_gui_t *gui, int active_part, int part
 		emmc_part_t *user_part = nx_emmc_part_find(&gpt_parsed, "USER");
 		if (!user_part)
 		{
-			s_printf(gui->txt_buf, "\n#FFDD00 USER partition not found!#\n");
+			s_printf(gui->txt_buf, "\n#FFDD00 Partizione USER non trovata!#\n");
 			lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, gui->txt_buf);
 			manual_system_maintenance(true);
 
@@ -550,7 +550,7 @@ static int _dump_emummc_raw_part(emmc_tool_gui_t *gui, int active_part, int part
 		// Check for cancellation combo.
 		if (btn_read_vol() == (BTN_VOL_UP | BTN_VOL_DOWN))
 		{
-			s_printf(gui->txt_buf, "\n#FFDD00 The emuMMC was cancelled!#\n");
+			s_printf(gui->txt_buf, "\n#FFDD00 La emuMMC e' stata annullata!#\n");
 			lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, gui->txt_buf);
 			manual_system_maintenance(true);
 
@@ -566,8 +566,8 @@ static int _dump_emummc_raw_part(emmc_tool_gui_t *gui, int active_part, int part
 		while (!sdmmc_storage_read(storage, lba_curr, num, buf))
 		{
 			s_printf(gui->txt_buf,
-				"\n#FFDD00 Error reading %d blocks @LBA %08X,#\n"
-				"#FFDD00 from eMMC (try %d). #",
+				"\n#FFDD00 Errore nella lettura di %d blocchi @LBA %08X,#\n"
+				"#FFDD00 dalla eMMC (provo %d). #",
 				num, lba_curr, ++retryCount);
 			lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, gui->txt_buf);
 			manual_system_maintenance(true);
@@ -575,7 +575,7 @@ static int _dump_emummc_raw_part(emmc_tool_gui_t *gui, int active_part, int part
 			msleep(150);
 			if (retryCount >= 3)
 			{
-				s_printf(gui->txt_buf, "#FF0000 Aborting...#\nPlease try again...\n");
+				s_printf(gui->txt_buf, "#FF0000 Annullamento...#\nSi prega di riprovare...\n");
 				lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, gui->txt_buf);
 				manual_system_maintenance(true);
 
@@ -583,7 +583,7 @@ static int _dump_emummc_raw_part(emmc_tool_gui_t *gui, int active_part, int part
 			}
 			else
 			{
-				s_printf(gui->txt_buf, "#FFDD00 Retrying...#\n");
+				s_printf(gui->txt_buf, "#FFDD00 Riprovando...#\n");
 				lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, gui->txt_buf);
 				manual_system_maintenance(true);
 			}
@@ -597,8 +597,8 @@ static int _dump_emummc_raw_part(emmc_tool_gui_t *gui, int active_part, int part
 		while (!sdmmc_storage_write(&sd_storage, sd_sector_off + lba_curr, num, buf))
 		{
 			s_printf(gui->txt_buf,
-				"\n#FFDD00 Error writing %d blocks @LBA %08X,#\n"
-				"#FFDD00 to SD (try %d). #",
+				"\n#FFDD00 Errore nella scrittura di %d blocchi @LBA %08X,#\n"
+				"#FFDD00 alla SD (provo %d). #",
 				num, lba_curr, ++retryCount);
 			lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, gui->txt_buf);
 			manual_system_maintenance(true);
@@ -606,7 +606,7 @@ static int _dump_emummc_raw_part(emmc_tool_gui_t *gui, int active_part, int part
 			msleep(150);
 			if (retryCount >= 3)
 			{
-				s_printf(gui->txt_buf, "#FF0000 Aborting...#\nPlease try again...\n");
+				s_printf(gui->txt_buf, "#FF0000 Annullamento...#\nSi prega di riprovare...\n");
 				lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, gui->txt_buf);
 				manual_system_maintenance(true);
 
@@ -614,7 +614,7 @@ static int _dump_emummc_raw_part(emmc_tool_gui_t *gui, int active_part, int part
 			}
 			else
 			{
-				s_printf(gui->txt_buf, "#FFDD00 Retrying...#\n");
+				s_printf(gui->txt_buf, "#FFDD00 Riprovando...#\n");
 				lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, gui->txt_buf);
 				manual_system_maintenance(true);
 			}
@@ -651,7 +651,7 @@ static int _dump_emummc_raw_part(emmc_tool_gui_t *gui, int active_part, int part
 
 	if (resized_count)
 	{
-		lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, "Done!\n");
+		lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, "Fatto!\n");
 
 		// Calculate USER size and set it for FatFS.
 		u32 user_sectors = resized_count - user_offset - 33;
@@ -664,7 +664,7 @@ static int _dump_emummc_raw_part(emmc_tool_gui_t *gui, int active_part, int part
 		strcpy(user_part.name, "USER");
 		nx_emmc_bis_init(&user_part, true, sd_sector_off);
 
-		s_printf(gui->txt_buf, "Formatting USER... \n");
+		s_printf(gui->txt_buf, "Formattando USER... \n");
 		lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, gui->txt_buf);
 		manual_system_maintenance(true);
 
@@ -678,18 +678,18 @@ static int _dump_emummc_raw_part(emmc_tool_gui_t *gui, int active_part, int part
 
 		if (mkfs_error)
 		{
-			s_printf(gui->txt_buf, "#FF0000 Failed (%d)!#\nPlease try again...\n", mkfs_error);
+			s_printf(gui->txt_buf, "#FF0000 Fallito (%d)!#\nSi prega di riprovare...\n", mkfs_error);
 			lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, gui->txt_buf);
 
 			return 0;
 		}
-		lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, "Done!\n");
+		lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, "Fatto!\n");
 
 		// Flush BIS cache, deinit, clear BIS keys slots and reinstate SBK.
 		nx_emmc_bis_end();
 		hos_bis_keys_clear();
 
-		s_printf(gui->txt_buf, "Writing new GPT... ");
+		s_printf(gui->txt_buf, "Scrivendo la nuova GPT... ");
 		lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, gui->txt_buf);
 		manual_system_maintenance(true);
 
@@ -709,7 +709,7 @@ static int _dump_emummc_raw_part(emmc_tool_gui_t *gui, int active_part, int part
 
 		if (gpt_entry_idx >= gpt->header.num_part_ents)
 		{
-			s_printf(gui->txt_buf, "\n#FF0000 No USER partition...#\nPlease try again...\n");
+			s_printf(gui->txt_buf, "\n#FF0000 Nessuna partizione USER...#\nSi prega di riprovare...\n");
 			lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, gui->txt_buf);
 			free(gpt);
 
@@ -807,16 +807,16 @@ try_load:
 	char *build_date = malloc(32);
 	const pkg1_id_t *pkg1_id = pkg1_identify(pkg1 + pk1_offset, build_date);
 
-	s_printf(txt_buf + strlen(txt_buf), "#00DDFF Found pkg1 ('%s')#\n", build_date);
+	s_printf(txt_buf + strlen(txt_buf), "#00DDFF Trovato pkg1 ('%s')#\n", build_date);
 	free(build_date);
 
 	if (!pkg1_id)
 	{
-		strcat(txt_buf, "#FFDD00 Unknown pkg1 version!#\n");
+		strcat(txt_buf, "#FFDD00 Versione pkg1 sconosciuta!#\n");
 		// Try backup bootloader.
 		if (bootloader_offset != BOOTLOADER_BACKUP_OFFSET)
 		{
-			strcat(txt_buf, "Trying backup bootloader...\n");
+			strcat(txt_buf, "Provando il bootloader di backup...\n");
 			bootloader_offset = BOOTLOADER_BACKUP_OFFSET;
 			goto try_load;
 		}
@@ -856,8 +856,8 @@ try_load:
 			free(bct_bldr);
 			if (bootloader_entrypoint > SEPT_PRI_ENTRY)
 			{
-				strcpy(txt_buf, "#FFDD00 Failed to run sept because main BCT is improper!#\n"
-					"#FFDD00 Run sept with proper BCT at least once to cache keys.#\n");
+				strcpy(txt_buf, "#FFDD00 Avvio di sept fallito perché la BCT principale e' inadeguata!#\n"
+					"#FFDD00 Avvia sept con la BCT corretta almeno una volta per fare il caching delle chiavi.#\n");
 				sept_error = true;
 				goto out;
 			}
@@ -900,7 +900,7 @@ bis_derivation:;
 		hos_bis_keys_clear();
 		hos_eks_bis_clear();
 
-		strcpy(txt_buf, "#FFDD00 BIS keys validation failed!#\n");
+		strcpy(txt_buf, "#FFDD00 Validazione chiavi BIS fallita!#\n");
 		sept_error = true;
 	}
 	else
@@ -918,13 +918,13 @@ out:
 		lv_obj_set_style(dark_bg, &mbox_darken);
 		lv_obj_set_size(dark_bg, LV_HOR_RES, LV_VER_RES);
 
-		static const char * mbox_btn_map[] = { "\211", "\222Launch", "\222Close", "\211", "" };
-		static const char * mbox_btn_map2[] = { "\211", "\222Close", "\211", "" };
+		static const char * mbox_btn_map[] = { "\211", "\222Avvia", "\222Chiudi", "\211", "" };
+		static const char * mbox_btn_map2[] = { "\211", "\222Chiudi", "\211", "" };
 		lv_obj_t * mbox = lv_mbox_create(dark_bg, NULL);
 		lv_mbox_set_recolor_text(mbox, true);
 		lv_obj_set_width(mbox, LV_HOR_RES / 9 * 5);
 
-		lv_mbox_set_text(mbox, "#C7EA46 BIS Keys Generation#");
+		lv_mbox_set_text(mbox, "#C7EA46 Generazione chiavi BIS#");
 
 		lv_obj_t * lb_desc = lv_label_create(mbox, NULL);
 		lv_label_set_long_mode(lb_desc, LV_LABEL_LONG_BREAK);
@@ -940,8 +940,8 @@ out:
 		}
 		else
 		{
-			lv_label_set_text(lb_desc, "Sept needs to launch in order to generate keys\nneeded for emuMMC resizing.\n"
-				"After that enter this menu again.");
+			lv_label_set_text(lb_desc, "Sept deve partire per generare le chiavi\nnecessarie per ridimensionare la emuMMC.\n"
+				"Dopo di cio', avvia nuovamente questo menu'.");
 			lv_mbox_add_btns(mbox, mbox_btn_map, _emummc_raw_check_sept_action);
 		}
 
@@ -974,19 +974,19 @@ void dump_emummc_raw(emmc_tool_gui_t *gui, int part_idx, u32 sector_start, u32 r
 
 	if (!sd_mount())
 	{
-		lv_label_set_text(gui->label_info, "#FFDD00 Failed to init SD!#");
+		lv_label_set_text(gui->label_info, "#FFDD00 Inizializzazione SD fallita!#");
 		goto out;
 	}
 
 	if (!sdmmc_storage_init_mmc(&emmc_storage, &emmc_sdmmc, SDMMC_BUS_WIDTH_8, SDHCI_TIMING_MMC_HS400))
 	{
-		lv_label_set_text(gui->label_info, "#FFDD00 Failed to init eMMC!#");
+		lv_label_set_text(gui->label_info, "#FFDD00 Inizializzazione eMMC fallita!#");
 		goto out;
 	}
 
 	if (!_emummc_raw_check_sept(gui, resized_count))
 	{
-		s_printf(gui->txt_buf, "#FFDD00 For formatting USER partition,#\n#FFDD00 BIS keys are needed!#\n");
+		s_printf(gui->txt_buf, "#FFDD00 Per formattare la partzione USER,#\n#FFDD00 servono le chiavi BIS!#\n");
 		lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, gui->txt_buf);
 		sdmmc_storage_end(&emmc_storage);
 		goto out;
@@ -1033,11 +1033,11 @@ void dump_emummc_raw(emmc_tool_gui_t *gui, int part_idx, u32 sector_start, u32 r
 
 		if (!res)
 		{
-			s_printf(txt_buf, "#FFDD00 Failed!#\n");
+			s_printf(txt_buf, "#FFDD00 Fallito!#\n");
 			goto out_failed;
 		}
 		else
-			s_printf(txt_buf, "Done!\n");
+			s_printf(txt_buf, "Fatto!\n");
 
 		lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, txt_buf);
 		manual_system_maintenance(true);
@@ -1066,9 +1066,9 @@ void dump_emummc_raw(emmc_tool_gui_t *gui, int part_idx, u32 sector_start, u32 r
 		res = _dump_emummc_raw_part(gui, 2, part_idx, sector_start, &emmc_storage, &rawPart, resized_count);
 
 		if (!res)
-			s_printf(txt_buf, "#FFDD00 Failed!#\n");
+			s_printf(txt_buf, "#FFDD00 Fallito!#\n");
 		else
-			s_printf(txt_buf, "Done!\n");
+			s_printf(txt_buf, "Fatto!\n");
 
 		lv_label_ins_text(gui->label_log, LV_LABEL_POS_LAST, txt_buf);
 		manual_system_maintenance(true);
@@ -1080,7 +1080,7 @@ out_failed:
 
 	if (res)
 	{
-		s_printf(txt_buf, "Time taken: %dm %ds.\nFinished!", timer / 60, timer % 60);
+		s_printf(txt_buf, "Tempo impiegato: %dm %ds.\nFinito!", timer / 60, timer % 60);
 		strcpy(sdPath, gui->base_path);
 		strcat(sdPath, "raw_based");
 		FIL fp;
@@ -1092,7 +1092,7 @@ out_failed:
 		save_emummc_cfg(part_idx, sector_start, gui->base_path);
 	}
 	else
-		s_printf(txt_buf, "Time taken: %dm %ds.", timer / 60, timer % 60);
+		s_printf(txt_buf, "Tempo impiegato: %dm %ds.", timer / 60, timer % 60);
 
 	lv_label_set_text(gui->label_finish, txt_buf);
 
