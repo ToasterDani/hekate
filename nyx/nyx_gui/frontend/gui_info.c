@@ -2070,17 +2070,17 @@ static lv_res_t _create_window_battery_status(lv_obj_t *btn)
 	lv_obj_t * lb_desc2 = lv_label_create(desc2, lb_desc);
 
 	lv_label_set_static_text(lb_desc2,
-		"#00DDFF Info carica batteria IC:#\n"
-		"Limite voltaggio in ingresso:\n"
+		"#00DDFF Info carica batt. IC:#\n"
+		"Limite volt. in ingresso:\n"
 		"Limite corrente in ingresso:\n"
-		"Limite voltaggio minimo:\n"
-		"Limite corrente ricarica rapida:\n"
-		"Limite corrente ricarica:\n"
+		"Limite volt. minimo:\n"
+		"Limite corrente ric. rapida:\n"
+		"Limite corrente ric.:\n"
 		"Stato ricarica:\n"
 		"Stato temperatura:\n\n"
 		"#00DDFF Info USB-PD IC:#\n"
 		"Stato connessione:\n"
-		"Limite Wattaggio in ingresso:\n"
+		"Limite Watt. in ingresso:\n"
 		"Profili USB-PD:"
 	);
 	lv_obj_set_width(lb_desc2, lv_obj_get_width(desc2));

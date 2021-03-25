@@ -1851,18 +1851,18 @@ int usb_device_gadget_ums(usb_ctxt_t *usbs)
 		sdmmc_storage_set_mmc_partition(ums.lun.storage, ums.lun.partition - 1);
 	}
 
-	ums.set_text(ums.label, "#C7EA46 Status:# Waiting for connection");
+	ums.set_text(ums.label, "#C7EA46 Stato:# In attesa di connessione");
 
 	// Initialize Control Endpoint.
 	if (usb_ops.usb_device_enumerate(USB_GADGET_UMS))
 		goto error;
 
-	ums.set_text(ums.label, "#C7EA46 Status:# Waiting for LUN");
+	ums.set_text(ums.label, "#C7EA46 Stato:# In attesa di LUN");
 
 	if (usb_ops.usb_device_class_send_max_lun(0)) // One device for now.
 		goto error;
 
-	ums.set_text(ums.label, "#C7EA46 Status:# Started UMS");
+	ums.set_text(ums.label, "#C7EA46 Stato:# UMS Avviato");
 
 	if (usbs->sectors)
 		ums.lun.num_sectors = usbs->sectors;
@@ -1879,7 +1879,7 @@ int usb_device_gadget_ums(usb_ctxt_t *usbs)
 		{
 			// Check if we are allowed to unload the media.
 			if (ums.lun.prevent_medium_removal)
-				ums.set_text(ums.label, "#C7EA46 Status:# Unload attempt prevented");
+				ums.set_text(ums.label, "#C7EA46 Stato:# Prevenuto tentativo di Unload");
 			else
 				break;
 		}
@@ -1908,11 +1908,11 @@ int usb_device_gadget_ums(usb_ctxt_t *usbs)
 		send_status(&ums, &ums.bulk_ctxt);
 	} while (ums.state != UMS_STATE_TERMINATED);
 
-	ums.set_text(ums.label, "#C7EA46 Status:# Disk ejected");
+	ums.set_text(ums.label, "#C7EA46 Stato:# Unita' rimossa");
 	goto exit;
 
 error:
-	ums.set_text(ums.label, "#FFDD00 Error:# Timed out or canceled!");
+	ums.set_text(ums.label, "#FFDD00 Errore:# Tempo scaduto o annullato!");
 	res = 1;
 
 exit:
