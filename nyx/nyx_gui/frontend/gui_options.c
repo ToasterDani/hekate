@@ -185,7 +185,7 @@ static lv_res_t _autoboot_enable_more_action(lv_obj_t *btn)
 static void _create_autoboot_window()
 {
 	lv_obj_t *win = create_window_autoboot(SYMBOL_GPS" Avvio Automatico");
-	lv_win_add_btn(win, NULL, SYMBOL_POWER" Disattiva", _autoboot_disable_action);
+	lv_win_add_btn(win, NULL, SYMBOL_POWER" OFF", _autoboot_disable_action);
 
 	static lv_style_t h_style;
 	lv_style_copy(&h_style, &lv_style_transp);
@@ -1008,7 +1008,7 @@ lv_res_t create_win_nyx_options(lv_obj_t *parrent_btn)
 	lv_obj_align(line_sep, label_txt2, LV_ALIGN_OUT_BOTTOM_LEFT, -(LV_DPI / 4), LV_DPI / 4);
 
 	lv_obj_t *label_txt = lv_label_create(l_cont, NULL);
-	lv_label_set_static_text(label_txt, SYMBOL_HOME" Schermata Principale");
+	lv_label_set_static_text(label_txt, SYMBOL_HOME" Schermata Princ.");
 	lv_obj_set_style(label_txt, th->label.prim);
 	lv_obj_align(label_txt, line_sep, LV_ALIGN_OUT_BOTTOM_LEFT, LV_DPI / 4, LV_DPI / 4);
 
@@ -1016,10 +1016,10 @@ lv_res_t create_win_nyx_options(lv_obj_t *parrent_btn)
 	lv_obj_set_top(ddlist, true);
 	lv_ddlist_set_draw_arrow(ddlist, true);
 	lv_ddlist_set_options(ddlist,
-		"Menu' principale       \n"
-		"Tutte le configurazioni\n"
+		"Menu' Princ.    \n"
+		"Tutte le config.\n"
 		"Avvia\n"
-		"Altre configurazioni");
+		"Altre config.");
 	lv_ddlist_set_selected(ddlist, n_cfg.home_screen);
 	lv_ddlist_set_action(ddlist, _home_screen_action);
 	lv_obj_align(ddlist, label_txt, LV_ALIGN_OUT_RIGHT_MID, LV_DPI * 2 / 3, 0);
@@ -1028,7 +1028,7 @@ lv_res_t create_win_nyx_options(lv_obj_t *parrent_btn)
 	lv_label_set_recolor(label_txt2, true);
 	lv_label_set_static_text(label_txt2,
 		"Scegli lo schermo da mostrare all'avvio di Nyx.\n"
-		"#FF8000 Tutte le Configurazioni:# #C7EA46 Combina Altre Configurazioni negli slot vuoti di Avvia.#\n"
+		"#FF8000 Tutte le Config.:# #C7EA46 Combina Altre Config. negli slot vuoti di Avvia.#\n"
 		"#FF8000 Avvia / Altre Configurazioni:# #C7EA46 Usa la vista divisa classica.#");
 	lv_obj_set_style(label_txt2, &hint_small_style);
 	lv_obj_align(label_txt2, label_txt, LV_ALIGN_OUT_BOTTOM_LEFT, 0, LV_DPI / 4);
@@ -1047,8 +1047,8 @@ lv_res_t create_win_nyx_options(lv_obj_t *parrent_btn)
 	lv_label_set_recolor(label_txt2, true);
 	lv_label_set_static_text(label_txt2,
 		"Cambia l'offset dell'orologio manualmente.\n"
-		"#C7EA46 Data e Ora verranno convertite in offset#\n"
-		"#C7EA46 automaticamente. Questo verra' anche usato per operazioni di FatFS.#");
+		"#C7EA46 Data e Ora verranno convertite in offset automaticamente.#\n"
+		"#C7EA46 Questo verra' anche usato per operazioni di FatFS.#");
 	lv_obj_set_style(label_txt2, &hint_small_style);
 	lv_obj_align(label_txt2, btn2, LV_ALIGN_OUT_BOTTOM_LEFT, 0, LV_DPI / 4);
 

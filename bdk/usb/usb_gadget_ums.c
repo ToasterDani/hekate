@@ -1832,7 +1832,7 @@ int usb_device_gadget_ums(usb_ctxt_t *usbs)
 	ums.set_text = usbs->set_text;
 	ums.system_maintenance = usbs->system_maintenance;
 
-	ums.set_text(ums.label, "#C7EA46 Status:# Mounting disk");
+	ums.set_text(ums.label, "#C7EA46 Stato:# Montaggio unita'");
 
 	// Initialize sdmmc.
 	if (usbs->type == MMC_SD)

@@ -1663,8 +1663,8 @@ static void _create_tab_tools_arc_autorcm(lv_theme_t *th, lv_obj_t *parent)
 	s_printf(txt_buf,
 		"Ti permette di entrare in RCM senza usare #C7EA46 VOL+# & #C7EA46 HOME# (jig).\n"
 		"#FF8000 Puo' ripristinare tutte le varianti di AutoRCM quando richiesto.#\n"
-		"#FF3C28 Questo corrompe la BCT e non si puo' avviare senza un bootloader#\n"
-		"#FF3C28 personalizzato.#");
+		"#FF3C28 Questo corrompe la BCT e non si puo' avviare senza un#\n"
+		"#FF3C28 bootloader personalizzato.#");
 
 	if (h_cfg.rcm_patched)
 		strcat(txt_buf, " #FF8000 Questa opzione e' disattivata perche' l'unita' e' patchata!#");
