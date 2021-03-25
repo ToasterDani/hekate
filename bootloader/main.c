@@ -1182,10 +1182,10 @@ static void _show_errors()
 		display_backlight_brightness(150, 1000);
 
 		if (h_cfg.errors & ERR_SD_BOOT_EN)
-			WPRINTF("Montaggio della SD fallito!\n");
+			WPRINTF("Montaggio della scheda SD fallito!\n");
 
 		if (h_cfg.errors & ERR_LIBSYS_LP0)
-			WPRINTF("Librerie LP0 (modalita' riposo) mancanti!\n");
+			WPRINTF("Librerie LP0 (modalita\' riposo) mancanti!\n");
 		if (h_cfg.errors & ERR_LIBSYS_MTC)
 			WPRINTF("Libreria Minerva vecchia o obsoleta!\n");
 
@@ -1194,7 +1194,7 @@ static void _show_errors()
 
 		if (h_cfg.errors & ERR_EXCEPTION)
 		{
-			WPRINTFARGS("Si e' verificata un'eccezione (LR %08X):\n", *excp_lr);
+			WPRINTFARGS("Si e\' verificata un\'eccezione (LR %08X):\n", *excp_lr);
 			switch (*excp_type)
 			{
 			case EXCP_TYPE_RESET:
@@ -1218,7 +1218,7 @@ static void _show_errors()
 
 		if (0 && h_cfg.errors & ERR_L4T_KERNEL)
 		{
-			WPRINTF("Si e' verificata un'eccezione con L4T.\n");
+			WPRINTF("Si e\' verificata un\'eccezione con L4T.\n");
 			if (!sd_save_to_file((void *)PSTORE_ADDR, PSTORE_SZ, "L4T_panic.bin"))
 				WPRINTF("PSTORE salvato in L4T_panic.bin\n");
 		}
@@ -1427,7 +1427,7 @@ ment_t ment_cinfo[] = {
 	//MDEF_HANDLER("Print kfuse info", print_kfuseinfo),
 	//MDEF_HANDLER("Print TSEC keys", print_tsec_key),
 	MDEF_CHGLINE(),
-	MDEF_CAPTION("-- Info unita' archiviazione --", 0xFF0AB9E6),
+	MDEF_CAPTION("-- Info unita\' archiviazione --", 0xFF0AB9E6),
 	MDEF_HANDLER("eMMC", print_mmc_info),
 	MDEF_HANDLER("Scheda SD", print_sdcard_info),
 	MDEF_CHGLINE(),

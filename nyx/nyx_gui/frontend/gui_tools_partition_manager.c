@@ -2437,7 +2437,7 @@ lv_res_t create_window_partition_manager(lv_obj_t *btn)
 	lv_obj_t *lbl_notes = lv_label_create(h1, NULL);
 	lv_label_set_recolor(lbl_notes, true);
 	lv_label_set_static_text(lbl_notes,
-		"Note 1: Posso fare backup di file solo fino a #C7EA46 1GB#. Se ce ne sono di più, ti verra' chiesto di farlo manualmente al passo successivo.\n"
+		"Note 1: Posso fare backup di file solo fino a #C7EA46 1GB#. Se ce ne sono di piu', ti verra' chiesto di farlo manualmente al passo successivo.\n"
 		"Note 2: La emuMMC ridimensionata formatta la partizione USER. Puoi usare un gestore di salvataggi per copiarli prima.\n"
 		"Note 3: Le opzioni #C7EA46 Flasha Linux# e #C7EA46 Flasha Android# flasheranno file se sono trovate partizione e file adeguati.\n"
 		"Note 4: La cartella di installazione e' #C7EA46 switchroot/install#. Linux usa #C7EA46 l4t.XX# e Android usa #C7EA46 twrp.img# e #C7EA46 tegra210-icosa.dtb#.");

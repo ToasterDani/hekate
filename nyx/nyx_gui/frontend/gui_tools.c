@@ -1594,7 +1594,7 @@ static void _create_tab_tools_arc_autorcm(lv_theme_t *th, lv_obj_t *parent)
 		"le cartelle, incluse la radice della scheda SD e \n"
 		"le cartelle emuMMC \'Nintendo\'.\n"
 		"#C7EA46 Imposta il bit di archiviazione a cartelle con ##FF8000 .[ext]#\n"
-		"#FF8000 Use questa opzione quando hai avvisi di corruzione.#");
+		"#FF8000 Usa questa opzione quando hai avvisi di corruzione.#");
 	lv_obj_set_style(label_txt2, &hint_small_style);
 	lv_obj_align(label_txt2, btn, LV_ALIGN_OUT_BOTTOM_LEFT, 0, LV_DPI / 3);
 
@@ -1640,7 +1640,7 @@ static void _create_tab_tools_arc_autorcm(lv_theme_t *th, lv_obj_t *parent)
 	label_btn = lv_label_create(btn3, NULL);
 	lv_btn_set_fit(btn3, true, true);
 	lv_label_set_recolor(label_btn, true);
-	lv_label_set_text(label_btn, SYMBOL_REFRESH"  AutoRCM #00FFC9   ATTIVO #");
+	lv_label_set_text(label_btn, SYMBOL_REFRESH"  AutoRCM #00FFC9   ON #");
 	lv_obj_align(btn3, line_sep, LV_ALIGN_OUT_BOTTOM_LEFT, LV_DPI / 4, LV_DPI / 4);
 	lv_btn_set_action(btn3, LV_BTN_ACTION_CLICK, _create_mbox_autorcm_status);
 

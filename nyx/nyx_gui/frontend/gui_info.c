@@ -2263,14 +2263,14 @@ void create_tab_info(lv_theme_t *th, lv_obj_t *parent)
 	lv_obj_t *btn3 = lv_btn_create(h1, btn);
 	label_btn = lv_label_create(btn3, NULL);
 	lv_btn_set_fit(btn3, true, true);
-	lv_label_set_static_text(label_btn, SYMBOL_CIRCUIT"  HW & Fuses");
+	lv_label_set_static_text(label_btn, SYMBOL_CIRCUIT"  HW & Fuse");
 	lv_obj_align(btn3, line_sep, LV_ALIGN_OUT_BOTTOM_LEFT, LV_DPI / 4, LV_DPI / 2);
 	lv_btn_set_action(btn3, LV_BTN_ACTION_CLICK, _create_window_fuses_info_status);
 
 	// Create KFuses button.
 	lv_obj_t *btn4 = lv_btn_create(h1, btn);
 	label_btn = lv_label_create(btn4, NULL);
-	lv_label_set_static_text(label_btn, SYMBOL_SHUFFLE"  KFuses");
+	lv_label_set_static_text(label_btn, SYMBOL_SHUFFLE"  KFuse");
 	lv_obj_align(btn4, btn3, LV_ALIGN_OUT_RIGHT_TOP, LV_DPI * 46 / 100, 0);
 	lv_btn_set_action(btn4, LV_BTN_ACTION_CLICK, _kfuse_dump_window_action);
 

@@ -422,7 +422,7 @@ void config_bootdelay()
 	}
 
 	memset(&ments[i + 2], 0, sizeof(ment_t));
-	menu_t menu = {ments, "Ritardo di entrata nel menu' del bootloader", 0, 0};
+	menu_t menu = {ments, "Ritardo di entrata nel menu\' del bootloader", 0, 0};
 
 	u32 *temp_bootwait = (u32 *)tui_do_menu(&menu);
 	if (temp_bootwait != NULL)
@@ -482,7 +482,7 @@ void config_backlight()
 	}
 
 	memset(&ments[i + 1], 0, sizeof(ment_t));
-	menu_t menu = {ments, "Luminosita' retroilluminazione", 0, 0};
+	menu_t menu = {ments, "Luminosita\' retroilluminazione", 0, 0};
 
 	u32 *temp_backlight = (u32 *)tui_do_menu(&menu);
 	if (temp_backlight != NULL)
@@ -540,7 +540,7 @@ void config_auto_hos_poweroff()
 	}
 
 	memset(&ments[5], 0, sizeof(ment_t));
-	menu_t menu = {ments, "Spegni se uscito da modalita' riposo in HOS", 0, 0};
+	menu_t menu = {ments, "Spegni se uscito da modalita\' riposo in HOS", 0, 0};
 
 	u32 *temp_autohosoff = (u32 *)tui_do_menu(&menu);
 	if (temp_autohosoff != NULL)

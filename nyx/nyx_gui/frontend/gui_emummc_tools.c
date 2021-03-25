@@ -361,7 +361,7 @@ static lv_res_t _create_mbox_emummc_create(lv_obj_t *btn)
 		"Benvenuto allo strumento di creazione #C7EA46 emuMMC#!\n\n"
 		"Scegli il tipo di emuMMC che vuoi creare.\n"
 		"#FF8000 File su SD viene salvata come file sulla partizione FAT.\n"
-		"#FF8000 Partizione su SD e' salvata come immagine grezza su una partizione disponibile.");
+		"#FF8000 Partizione su SD e' salvata come immagine grezza\nsu una partizione disponibile.");
 
 	lv_mbox_add_btns(mbox, mbox_btn_map, _create_emummc_action);
 
