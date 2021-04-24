@@ -991,6 +991,7 @@ static lv_res_t _create_window_fuses_info_status(lv_obj_t *btn)
 			break;
 		case 0x32000501:
 		case 0x33000502:
+		case 0x33000503:
 			strcat(txt_buf, "4CD UNKN");
 			if (touch_panel)
 				panel_ic_paired = touch_panel->idx == 4;
@@ -1286,6 +1287,7 @@ static lv_res_t _create_mbox_benchmark(bool sd_bench)
 		lv_mbox_set_text(mbox, "#FFDD00 Inizializzazione memoria di archiviazione fallita!#");
 	else
 	{
+		int error = 0;
 		u32 iters = 3;
 		u32 offset_chunk_start = ALIGN_DOWN(storage->sec_cnt / 3, 0x8000); // Align to 16MB.
 		if (storage->sec_cnt < 0xC00000)
@@ -1306,7 +1308,7 @@ static lv_res_t _create_mbox_benchmark(bool sd_bench)
 			while (data_remaining)
 			{
 				u32 time_taken = get_tmr_us();
-				sdmmc_storage_read(storage, sector + lba_curr, sector_num, (u8 *)MIXD_BUF_ALIGNED);
+				error = !sdmmc_storage_read(storage, sector + lba_curr, sector_num, (u8 *)MIXD_BUF_ALIGNED);
 				time_taken = get_tmr_us() - time_taken;
 				timer += time_taken;
 
@@ -1323,8 +1325,11 @@ static lv_res_t _create_mbox_benchmark(bool sd_bench)
 					prevPct = pct;
 
 					if (btn_read_vol() == (BTN_VOL_UP | BTN_VOL_DOWN))
-						break;
+						error = -1;
 				}
+
+				if (error)
+					goto error;
 			}
 			lv_bar_set_value(bar, 100);
 
@@ -1347,7 +1352,7 @@ static lv_res_t _create_mbox_benchmark(bool sd_bench)
 			while (data_remaining)
 			{
 				u32 time_taken = get_tmr_us();
-				sdmmc_storage_read(storage, sector + lba_curr, sector_num, (u8 *)MIXD_BUF_ALIGNED);
+				error = !sdmmc_storage_read(storage, sector + lba_curr, sector_num, (u8 *)MIXD_BUF_ALIGNED);
 				time_taken = get_tmr_us() - time_taken;
 				timer += time_taken;
 
@@ -1364,8 +1369,11 @@ static lv_res_t _create_mbox_benchmark(bool sd_bench)
 					prevPct = pct;
 
 					if (btn_read_vol() == (BTN_VOL_UP | BTN_VOL_DOWN))
-						break;
+						error = -1;
 				}
+
+				if (error)
+					goto error;
 			}
 			lv_bar_set_value(bar, 100);
 
@@ -1402,7 +1410,7 @@ static lv_res_t _create_mbox_benchmark(bool sd_bench)
 			while (data_remaining)
 			{
 				u32 time_taken = get_tmr_us();
-				sdmmc_storage_read(storage, sector + random_offsets[lba_idx], sector_num, (u8 *)MIXD_BUF_ALIGNED);
+				error = !sdmmc_storage_read(storage, sector + random_offsets[lba_idx], sector_num, (u8 *)MIXD_BUF_ALIGNED);
 				time_taken = get_tmr_us() - time_taken;
 				timer += time_taken;
 
@@ -1419,7 +1427,13 @@ static lv_res_t _create_mbox_benchmark(bool sd_bench)
 					prevPct = pct;
 
 					if (btn_read_vol() == (BTN_VOL_UP | BTN_VOL_DOWN))
-						break;
+						error = -1;
+				}
+
+				if (error)
+				{
+					free(random_offsets);
+					goto error;
 				}
 			}
 			lv_bar_set_value(bar, 100);
@@ -1430,11 +1444,25 @@ static lv_res_t _create_mbox_benchmark(bool sd_bench)
 			s_printf(txt_buf + strlen(txt_buf),
 				" Random      4KiB - Tasso: #C7EA46 %3d.%02d MiB/s#, IOPS: #C7EA46 %4d#\n",
 				rate_1k / 1000, (rate_1k % 1000) / 10, iops_1k);
+			if (iter_curr == iters - 1)
+				txt_buf[strlen(txt_buf) - 1] = 0; // Cut off last line change.			
 			lv_label_set_text(lbl_status, txt_buf);
 			lv_obj_align(lbl_status, NULL, LV_ALIGN_CENTER, 0, 0);
 			lv_obj_align(mbox, NULL, LV_ALIGN_CENTER, 0, 0);
 			manual_system_maintenance(true);
 			free(random_offsets);
+		}
+
+error:
+		if (error)
+		{
+			if (error == -1)
+				s_printf(txt_buf + strlen(txt_buf), "\n#FFDD00 Aborted!#");
+			else
+				s_printf(txt_buf + strlen(txt_buf), "\n#FFDD00 IO Error occurred!#");
+
+			lv_label_set_text(lbl_status, txt_buf);
+			lv_obj_align(lbl_status, NULL, LV_ALIGN_CENTER, 0, 0);
 		}
 
 		lv_obj_del(bar);
